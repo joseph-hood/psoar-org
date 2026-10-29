@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parseIcs, toPlainText } from './lib/ics.mjs';
-import { parseRss } from './lib/rss.mjs';
+import { parseArchive, parseRss } from './lib/rss.mjs';
 
 const ics = (events) =>
   [
@@ -152,6 +152,28 @@ test('Substack RSS', () => {
     [
       ['Newer & better', 'Hello & welcome', 'https://substackcdn.com/image/x.jpg'],
       ['Older', 'Short', ''],
+    ],
+  );
+});
+
+test('Substack archive API (fallback)', () => {
+  const posts = parseArchive(
+    JSON.stringify([
+      { title: 'Older', canonical_url: 'https://psoar.substack.com/p/older', post_date: '2026-09-01T12:00:00.000Z', subtitle: 'Sub' },
+      {
+        title: 'Newer',
+        canonical_url: 'https://psoar.substack.com/p/newer',
+        post_date: '2026-10-06T12:00:00.000Z',
+        description: 'Hello &amp; welcome',
+        cover_image: 'https://substackcdn.com/image/y.jpg',
+      },
+    ]),
+  );
+  assert.deepEqual(
+    posts.map((p) => [p.title, p.summary, p.image]),
+    [
+      ['Newer', 'Hello & welcome', 'https://substackcdn.com/image/y.jpg'],
+      ['Older', 'Sub', ''],
     ],
   );
 });

@@ -22,8 +22,10 @@ Substack posts appear on the site by morning without anyone editing it.
 
 - **Need an event on the site right now?** Open **Actions → Deploy site to GitHub Pages → Run workflow**. It's live
   in about two minutes.
-- **If Google or Substack is down** during a run, that run stops before publishing (you'll see a red ✗ in Actions).
+- **If Google Calendar is down** during a run, that run stops before publishing (you'll see a red ✗ in Actions).
   The live site keeps yesterday's events; the next run fixes itself.
+- **If Substack can't be reached**, the site still publishes; the home page shows a "Read the newsletter" button
+  in place of the latest posts until the next run that reaches it.
 - **GitHub pauses scheduled runs after 60 days with no commits** to the repository. If events stop updating, open
   **Actions → Deploy site to GitHub Pages**; if there's a banner saying the schedule was disabled, click **Enable
   workflow**. Any merged pull request also resets the 60 days.

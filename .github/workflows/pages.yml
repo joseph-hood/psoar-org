@@ -27,8 +27,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # When publishing, stop if the calendar or newsletter can't be downloaded,
-      # so an outage never replaces the live site with an empty events list.
+      # When publishing, stop if the calendar can't be downloaded, so an outage
+      # never replaces the live site with an empty events list.
       FEEDS_STRICT: ${{ github.event_name == 'pull_request' && '0' || '1' }}
     steps:
       - uses: actions/checkout@v7

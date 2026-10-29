@@ -36,6 +36,28 @@ export function parseRss(xml, limit = 6) {
     .slice(0, limit);
 }
 
+/**
+ * Substack's archive API (/api/v1/archive), used when the RSS feed is refused.
+ * @param {string} json
+ * @param {number} [limit]
+ * @returns {NewsletterPost[]}
+ */
+export function parseArchive(json, limit = 6) {
+  const items = JSON.parse(json);
+  if (!Array.isArray(items)) throw new Error('Not a Substack archive (expected a list).');
+  return items
+    .map((item) => ({
+      title: String(item.title ?? '').trim(),
+      url: String(item.canonical_url ?? ''),
+      date: new Date(item.post_date).toISOString(),
+      summary: summarize(String(item.description || item.subtitle || '')),
+      image: String(item.cover_image ?? ''),
+    }))
+    .filter((post) => post.title && /^https:\/\//.test(post.url))
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, limit);
+}
+
 function text(value) {
   if (value == null) return '';
   if (typeof value === 'object') return String(value['#text'] ?? '');

@@ -15,7 +15,9 @@ live, common edits, TODOs); keep it accurate when you change how things work.
   JSON or hand-edit events; they're managed in Google Calendar.
 - `.github/workflows/pages.yml` runs tests, `npm run check`, `npm run build`, `tools/check-site.py` on every PR, and
   on push to `main`, daily at 10:23 UTC, and on manual "Run workflow" also publishes `dist/`. Publishing runs set
-  `FEEDS_STRICT=1`, so a feed outage fails the run and the live site stays as it was.
+  `FEEDS_STRICT=1`, so a calendar outage fails the run and the live site stays as it was. The newsletter is never
+  required (Substack has refused its RSS to GitHub's servers, so it falls back to its archive API, then to a
+  "Read the newsletter" button).
 - Pages filter out past events at build time, and a small script hides events that end between builds.
 - Old WordPress addresses forward via `redirects` in `astro.config.mjs` (list in `src/data/old-urls.json`).
 - Switch in `src/config/site.ts`: `noindex` (true until launch). Don't change it unless asked.
