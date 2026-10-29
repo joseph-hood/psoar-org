@@ -48,16 +48,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     {!noindex && <link rel="canonical" href={canonical} />}
-    <meta name="theme-color" content="#131d13" />
+    <meta name="theme-color" content="#1c1b33" />
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={new URL('/og-image.png', Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The PSoAR logo: a bird with outstretched wings over the outline of Arkansas" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Lets our CSS know JavaScript is available (used by the mobile menu). -->
     <script is:inline>

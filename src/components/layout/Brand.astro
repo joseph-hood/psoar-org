@@ -1,9 +1,16 @@
 ---
 /**
- * Brand — logo icon + "PSoAR" wordmark + full name. Used in the header and footer.
- * tone="dark" is for dark backgrounds (white text).
+ * Brand — the PSoAR logo.
+ *   tone="light" (header): the winged PSoAR wordmark.
+ *   tone="dark"  (footer): the round "Psychedelic Society of Arkansas" seal.
+ *
+ * The images are decorative (alt=""): the link around them carries the
+ * organization's name for screen readers.
+ * Logo files live in src/assets/brand/.
  */
-import Mark from '../ui/Mark.astro';
+import { Image } from 'astro:assets';
+import wordmark from '../../assets/brand/psoar-wordmark.webp';
+import seal from '../../assets/brand/psoar-seal.svg';
 
 interface Props {
   tone?: 'light' | 'dark';
@@ -11,43 +18,26 @@ interface Props {
 const { tone = 'light' } = Astro.props;
 ---
 
-<span class:list={['brand', `brand--${tone}`]}>
-  <Mark size={44} />
-  <span class="words">
-    <span class="short">PSoAR</span>
-    <span class="long">Psychedelic Society of Arkansas</span>
-  </span>
-</span>
+{
+  tone === 'light' ? (
+    <Image src={wordmark} alt="" height={36} densities={[1, 2, 3]} class="wordmark" loading="eager" />
+  ) : (
+    <img src={seal.src} alt="" width="104" height="104" class="seal" loading="lazy" decoding="async" />
+  )
+}
 
 <style>
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
+  .wordmark {
+    height: 36px;
+    width: auto;
   }
-  .words {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.05;
+  @media (max-width: 400px) {
+    .wordmark {
+      height: 30px;
+    }
   }
-  .short {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: 24px;
-    letter-spacing: 0.02em;
-    color: var(--night);
-  }
-  .long {
-    font-size: 12.5px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    color: var(--text-subtle);
-    margin-top: 3px;
-  }
-  .brand--dark .short {
-    color: #fff;
-  }
-  .brand--dark .long {
-    color: var(--on-dark-subtle);
+  .seal {
+    width: 104px;
+    height: 104px;
   }
 </style>

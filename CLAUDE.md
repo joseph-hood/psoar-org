@@ -21,9 +21,15 @@ live, common edits, TODOs); keep it accurate when you change how things work.
 - Pages filter out past events at build time, and a small script hides events that end between builds.
 - Old WordPress addresses forward via `redirects` in `astro.config.mjs` (list in `src/data/old-urls.json`).
 - Switch in `src/config/site.ts`: `noindex` (true until launch). Don't change it unless asked.
-- Brand (from the WordPress Elementor kit): salmon `#F19677`, pink `#EF8994`, mauve `#C485A2`, violet `#9183A4`,
-  sky `#6195BD`, blue `#3C8FB9`, night `#131D13`, forest `#253925`, mist `#F3F2F3`; added tokens for text contrast
-  (e.g. `--link`, `--salmon-ink`). Fonts: Lato (headings), Rubik (body), self-hosted via npm.
+- Brand: an Arkansas-sunset spectrum with **no greens** (the client's rule). The only green allowed is the bright
+  `#A5C161` inside the logo files themselves. Tokens in `src/styles/global.css`: night `#1C1B33`, dusk `#34305A`,
+  violet `#9183A4`, mauve `#C485A2`, pink `#EF8994`, salmon `#F19677`, orange `#C96E44` and blue `#2F6A96` (both
+  from the wordmark), sky `#99CEF2` and `#3E8BC1` (logo blues). Fonts: Lato (headings), Rubik (body), self-hosted.
+- Logos in `src/assets/brand/`: `psoar-wordmark.webp` (header), `psoar-seal.svg` (footer), `psoar-state-badge.png`
+  (About), `psoar-name-grey.png` (spare). Favicons and `og-image.png` in `public/` were generated from the badge.
+  The home hero photo (`src/assets/photos/ozarks-sunset.avif`) is shown greyscale and recoloured with the sunset
+  gradient so its forest green doesn't break the palette.
+- Partners (Natural State Mental Health, PATH) live in `src/data/partners.ts`; logos in `src/assets/partners/`.
 - Served from the domain root, so links start with `/`. Don't set `base` in `astro.config.mjs`.
 - This environment may block psoar.org, calendar.google.com and substack.com; if feeds fail locally the build keeps
   the last copy or an empty list (that's expected; CI has network).

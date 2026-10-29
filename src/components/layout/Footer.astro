@@ -8,6 +8,7 @@ import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import Mail from '@lucide/astro/icons/mail';
 import { mainNav } from '../../data/nav';
 import { SITE } from '../../config/site';
+import { partners } from '../../data/partners';
 import Brand from './Brand.astro';
 
 const involved = [
@@ -77,7 +78,21 @@ const year = new Date().getFullYear();
       </div>
 
       <div class="col">
-        <h2 class="col-title">Reach out</h2>
+        <h2 class="col-title">Partners</h2>
+        <ul role="list">
+          {
+            partners.map((p) => (
+              <li>
+                <a href={p.url} target="_blank" rel="noopener">
+                  {p.name}
+                  <ArrowUpRight size={14} aria-hidden="true" />
+                  <span class="sr-only"> (opens in a new tab)</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <h2 class="col-title reach">Reach out</h2>
         <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
       </div>
     </div>
@@ -125,6 +140,10 @@ const year = new Date().getFullYear();
     gap: 16px;
     max-width: 36ch;
   }
+  .about :global(.seal) {
+    width: 112px;
+    height: 112px;
+  }
   .about p {
     color: var(--on-dark-subtle);
   }
@@ -166,12 +185,17 @@ const year = new Date().getFullYear();
     display: grid;
     gap: 8px;
   }
+  .reach {
+    margin-top: 28px;
+  }
   .col a {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
     color: var(--on-dark);
     text-decoration: none;
+  }
+  .col a :global(svg) {
+    display: inline;
+    vertical-align: -1px;
+    margin-left: 4px;
   }
   .col a:hover {
     color: #fff;

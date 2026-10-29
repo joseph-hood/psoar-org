@@ -1,0 +1,128 @@
+---
+/**
+ * Partners — Natural State Mental Health and PATH, with their logos.
+ * Text and links are in src/data/partners.ts; logos in src/assets/partners/.
+ */
+import { Image } from 'astro:assets';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import Section from '../ui/Section.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { partners } from '../../data/partners';
+import nsmhLogo from '../../assets/partners/nsmh.png';
+import pathLogo from '../../assets/partners/path.svg';
+
+const logos = { nsmh: nsmhLogo, path: pathLogo };
+---
+
+<Section tone="white" labelledby="partners-heading">
+  <SectionHeading id="partners-heading" eyebrow="Partners" title="Stronger together" />
+  <ul class="partners" role="list">
+    {
+      partners.map((p) => (
+        <li class="partner">
+          <a class="logo" href={p.url} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+            <Image src={logos[p.id]} alt="" width={88} height={88} densities={[1, 2]} />
+          </a>
+          <div class="body">
+            <p class="eyebrow">{p.eyebrow}</p>
+            <h3 class="title">{p.title}</h3>
+            <p class="text">{p.text}</p>
+            <div class="links">
+              {p.links.map((link, i) => (
+                <a class:list={['link', { 'link--main': i === 0 }]} href={link.url} target="_blank" rel="noopener">
+                  {link.label} <ArrowUpRight size={16} aria-hidden="true" />
+                  <span class="sr-only"> ({p.name}, opens in a new tab)</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</Section>
+
+<style>
+  .partners {
+    display: grid;
+    gap: 20px;
+  }
+  @media (min-width: 900px) {
+    .partners {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .partner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 20px;
+    padding: clamp(20px, 3vw, 28px);
+    border-radius: var(--radius-lg);
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+  .logo {
+    display: block;
+    width: 88px;
+    height: 88px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+  .logo :global(img) {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+  }
+  @media (max-width: 480px) {
+    .partner {
+      grid-template-columns: 1fr;
+    }
+  }
+  .body {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(20px, 2vw, 24px);
+    line-height: 1.2;
+    color: var(--night);
+  }
+  .text {
+    color: var(--text);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--night);
+    text-decoration: none;
+  }
+  .link:hover {
+    border-color: var(--night);
+    color: var(--night);
+  }
+  .link--main {
+    background: var(--salmon);
+    border-color: var(--salmon);
+  }
+  .link--main:hover {
+    background: var(--salmon-hover);
+    border-color: var(--salmon-hover);
+  }
+</style>

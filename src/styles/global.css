@@ -6,37 +6,42 @@
    ========================================================================== */
 
 :root {
-  /* --- Brand colors --- */
-  --salmon: #f19677; /* brand primary: main buttons, highlights */
-  --pink: #ef8994; /* brand secondary */
-  --mauve: #c485a2; /* brand */
-  --violet: #9183a4; /* brand */
-  --sky: #6195bd; /* brand accent */
-  --blue: #3c8fb9; /* brand */
-  --night: #131d13; /* brand text color; dark sections */
-  --forest: #253925; /* brand */
-  --mist: #f3f2f3; /* brand */
+  /* --- Brand colors ---
+     The Arkansas-sunset spectrum: twilight indigo through violet, pink and
+     salmon, plus the logo's blues and orange. No greens: the bright logo green
+     (#a5c161) appears only inside the logo files themselves. */
+  --salmon: #f19677; /* main buttons, highlights */
+  --pink: #ef8994;
+  --mauve: #c485a2;
+  --violet: #9183a4;
+  --orange: #c96e44; /* the "o" in the PSoAR wordmark */
+  --blue: #2f6a96; /* PSoAR wordmark blue */
+  --sky: #99cef2; /* light blue from the logo */
+  --sky-deep: #3e8bc1; /* deep blue from the logo */
+  --night: #1c1b33; /* twilight: dark sections, main text */
+  --dusk: #34305a; /* deep violet dusk */
+  --mist: #f3f2f3;
 
-  /* --- Added --- */
+  /* --- Added for text, backgrounds and contrast --- */
   --salmon-hover: #f4ab92;
   --salmon-wash: #fdeee8;
   --salmon-ink: #a8472b; /* salmon dark enough for small text on light backgrounds */
-  --link: #2a6689; /* the brand blue, darkened to meet WCAG AA on paper */
-  --link-hover: #1d4b66;
+  --link: var(--blue); /* 5.4:1 on the paper background */
+  --link-hover: #234f71;
   --paper: #fbf8f4; /* page background */
   --white: #ffffff;
   --ink: var(--night); /* main text */
-  --text: #3b473d; /* secondary text */
-  --text-subtle: #5c675e; /* captions, small print */
-  --on-dark: #e9ede6; /* body text on night/forest */
-  --on-dark-subtle: #b7c2b4;
+  --text: #3d3f52; /* secondary text */
+  --text-subtle: #5e6075; /* captions, small print */
+  --on-dark: #ecebf3; /* body text on night/dusk */
+  --on-dark-subtle: #bdbbd0;
 
-  --line: rgba(19, 29, 19, 0.12);
-  --line-strong: rgba(19, 29, 19, 0.22);
-  --field-border: #7d877e; /* 3:1 against white, as WCAG requires for inputs */
+  --line: rgba(28, 27, 51, 0.12);
+  --line-strong: rgba(28, 27, 51, 0.22);
+  --field-border: #7f8193; /* 3:1 against white, as WCAG requires for inputs */
 
   /* The sunset used in the hero, page headers and the logo mark. */
-  --sunset: linear-gradient(180deg, #131d13 0%, #2c2a3d 34%, #9183a4 58%, #c485a2 70%, #ef8994 82%, #f19677 100%);
+  --sunset: linear-gradient(180deg, #1c1b33 0%, #34305a 34%, #9183a4 58%, #c485a2 70%, #ef8994 82%, #f19677 100%);
 
   /* --- Typography --- */
   --font-display: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -48,7 +53,7 @@
   --section-y: clamp(56px, 7vw, 96px); /* top/bottom section padding */
   --radius: 10px;
   --radius-lg: 18px;
-  --shadow: 0 1px 2px rgba(19, 29, 19, 0.06), 0 8px 24px -12px rgba(19, 29, 19, 0.18);
+  --shadow: 0 1px 2px rgba(28, 27, 51, 0.06), 0 8px 24px -12px rgba(28, 27, 51, 0.18);
 
   /* Colour of the keyboard focus ring (overridden on dark backgrounds) */
   --focus: var(--link);

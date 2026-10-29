@@ -12,6 +12,8 @@ on GitHub Pages. Merging a pull request into `main` publishes the site; see [doc
 | Resource links, books, videos               | `src/data/resources.ts`                                  |
 | Reading list and the 3 featured articles    | `src/data/articles.ts`                                   |
 | Mission / vision / purpose                  | `src/data/about.ts`                                      |
+| Partner organizations (NSMH, PATH)          | `src/data/partners.ts`                                   |
+| Logos and photos                            | `src/assets/`                                            |
 | Email, store, chapter form, Facebook, EIN   | `src/config/site.ts`                                     |
 | Contact form connection                     | `src/config/site.ts` → `contactForm` (see below)          |
 | Calendar or Substack address                | `src/config/feeds.json`                                  |
@@ -41,7 +43,9 @@ from the site.
 
 ## Newsletter (Substack)
 
-The home page shows the 3 latest posts from https://psoar.substack.com, refreshed daily like events.
+The home page has a "Read the newsletter" button to https://psoar.substack.com. The build also tries to download
+the latest posts and shows 3 of them when it can, but Substack currently refuses those downloads from GitHub's
+servers, so expect the button (and a harmless warning in the Actions log).
 
 ## Contact form
 
@@ -77,11 +81,8 @@ If you're offline, `npm run dev` keeps the last downloaded events (or shows the 
 
 ## TODO before launch
 
-- [ ] **Logo files.** The header, footer and favicon use a stand-in sunset badge drawn in code
-      (`src/components/ui/Mark.astro`, `public/favicon.svg`). Replace with the real PSoAR icon and wordmark.
 - [ ] **Connect the contact form** (above).
 - [ ] **Refresh the reading list.** The articles carried over from the old site date from 2008–2018. Add newer
       ones at the top of `src/data/articles.ts` and mark the best three `featured: true`.
 - [ ] **Video titles** on the Resources page (`title` in `src/data/resources.ts`, for screen readers).
-- [ ] **Social preview image** (`og:image`) once the logo/banner files are in.
 - [ ] **Launch steps** in [docs/DEPLOY.md](docs/DEPLOY.md): public calendar check, Pages, DNS, `noindex: false`.

@@ -2,7 +2,7 @@
 /**
  * Home page. Address: /
  * Sections, top to bottom: hero (with the next event), upcoming events, what
- * we're about, latest newsletter posts, featured reading, get involved.
+ * we're about, latest newsletter posts, featured reading, partners, get involved.
  */
 import ArrowRight from '@lucide/astro/icons/arrow-right';
 import Clock from '@lucide/astro/icons/clock';
@@ -20,6 +20,9 @@ import SubscribeLinks from '../components/events/SubscribeLinks.astro';
 import ArticleCards from '../components/sections/ArticleCards.astro';
 import NewsletterPosts from '../components/sections/NewsletterPosts.astro';
 import GetInvolved from '../components/sections/GetInvolved.astro';
+import Partners from '../components/sections/Partners.astro';
+import { Image } from 'astro:assets';
+import heroPhoto from '../assets/photos/ozarks-sunset.avif';
 import { endsAt, getEvents, startParts, whenText } from '../lib/events';
 import { articles } from '../data/articles';
 import { pillars } from '../data/about';
@@ -34,6 +37,17 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
 
 <BaseLayout>
   <section class="hero on-dark" aria-labelledby="hero-title">
+    <Image
+      src={heroPhoto}
+      alt=""
+      class="hero-photo"
+      widths={[720, 1080, 1440]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero-tint" aria-hidden="true"></div>
+    <div class="hero-shade" aria-hidden="true"></div>
     <div class="stars" aria-hidden="true"></div>
     <div class="container hero-inner">
       <div class="hero-text">
@@ -153,6 +167,8 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     <ArticleCards articles={featured} />
   </Section>
 
+  <Partners />
+
   <GetInvolved />
 </BaseLayout>
 
@@ -173,6 +189,33 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     background: var(--sunset);
     padding-top: clamp(56px, 8vw, 112px);
     padding-bottom: clamp(120px, 16vw, 220px);
+  }
+  /* The Ozarks photo, recoloured into the sunset palette: the photo is turned
+     to greyscale, then the tint layer colours it (no greens) and darkens the
+     top so the white text stays readable. */
+  .hero :global(.hero-photo) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    filter: grayscale(1) contrast(1.15) brightness(0.95);
+  }
+  /* Colours the greyscale photo with the sunset (keeps its light and shade). */
+  .hero-tint {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #34305a 0%, #6b5a8e 40%, #c485a2 65%, #ef8994 82%, #f19677 100%);
+    mix-blend-mode: color;
+  }
+  /* Darkens the sky behind the text. */
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(28, 27, 51, 0.7) 0%, rgba(28, 27, 51, 0.35) 55%, rgba(28, 27, 51, 0.15) 100%),
+      linear-gradient(180deg, rgba(28, 27, 51, 0.55) 0%, rgba(28, 27, 51, 0) 60%);
   }
   /* A few faint stars in the night sky. */
   .stars {
@@ -239,7 +282,7 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     gap: 10px;
     padding: 24px;
     border-radius: var(--radius-lg);
-    background: rgba(19, 29, 19, 0.55);
+    background: rgba(28, 27, 51, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.16);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
