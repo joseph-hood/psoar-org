@@ -48,7 +48,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     {!noindex && <link rel="canonical" href={canonical} />}
-    <meta name="theme-color" content="#1c1b33" />
+    <meta name="theme-color" content="#16152b" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -64,9 +64,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:image:alt" content="The PSoAR logo: a bird with outstretched wings over the outline of Arkansas" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Lets our CSS know JavaScript is available (used by the mobile menu). -->
+    <!--
+      Lets our CSS know JavaScript is available (used by the mobile menu), and
+      applies light mode before the page paints if the visitor chose it.
+      Dark mode is the default.
+    -->
     <script is:inline>
       document.documentElement.classList.add('js');
+      try {
+        if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+      } catch {}
     </script>
   </head>
   <body>

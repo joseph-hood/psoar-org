@@ -1,0 +1,71 @@
+---
+/**
+ * ThemeToggle — sun/moon button that switches between dark mode (the default)
+ * and light mode. The choice is remembered in the visitor's browser; the small
+ * script in BaseLayout applies it before the page paints, so there's no flash.
+ */
+import Sun from '@lucide/astro/icons/sun';
+import Moon from '@lucide/astro/icons/moon';
+---
+
+<button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to light mode">
+  <Sun size={20} aria-hidden="true" class="icon-sun" />
+  <Moon size={20} aria-hidden="true" class="icon-moon" />
+</button>
+
+<script>
+  const root = document.documentElement;
+  const sync = () => {
+    const light = root.dataset.theme === 'light';
+    for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+      button.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+    }
+  };
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+    button.addEventListener('click', () => {
+      const light = root.dataset.theme !== 'light';
+      if (light) root.dataset.theme = 'light';
+      else delete root.dataset.theme;
+      try {
+        localStorage.setItem('theme', light ? 'light' : 'dark');
+      } catch {
+        // Private browsing or storage blocked: the switch still works for this page.
+      }
+      sync();
+    });
+  }
+  sync();
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .theme-toggle:hover {
+    border-color: var(--ink);
+  }
+  /* In dark mode the button offers the sun (go light); in light mode, the moon. */
+  .icon-moon {
+    display: none;
+  }
+  :global(:root[data-theme='light']) .icon-sun {
+    display: none;
+  }
+  :global(:root[data-theme='light']) .icon-moon {
+    display: block;
+  }
+  /* Without JavaScript the button can't do anything, so hide it. */
+  :global(html:not(.js)) .theme-toggle {
+    display: none;
+  }
+</style>

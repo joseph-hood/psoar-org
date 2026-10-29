@@ -12,6 +12,7 @@ import X from '@lucide/astro/icons/x';
 import { mainNav } from '../../data/nav';
 import { SITE } from '../../config/site';
 import Brand from './Brand.astro';
+import ThemeToggle from './ThemeToggle.astro';
 import Button from '../ui/Button.astro';
 
 // Which page are we on? Used to mark the matching link as "current".
@@ -38,11 +39,13 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
           ))
         }
       </ul>
+      <ThemeToggle />
       <Button href={SITE.newsletterUrl} size="sm" external>Subscribe</Button>
     </nav>
 
     <!-- Narrow screens -->
     <div class="nav-narrow">
+      <ThemeToggle />
       <Button href={SITE.newsletterUrl} size="sm" external>Subscribe</Button>
       <button
         type="button"
@@ -112,7 +115,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
     position: sticky;
     top: 0;
     z-index: 10;
-    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
     backdrop-filter: saturate(1.4) blur(10px);
     -webkit-backdrop-filter: saturate(1.4) blur(10px);
     border-bottom: 1px solid var(--line);
@@ -136,12 +139,13 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
   .nav-wide {
     display: none;
     align-items: center;
-    gap: 32px;
+    gap: 20px;
   }
   .nav-wide ul {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 28px;
+    margin-right: 8px;
   }
   .nav-wide a:not(.btn),
   .mobile-menu a {
@@ -177,7 +181,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
     border: 1px solid var(--line-strong);
     border-radius: 999px;
     background: transparent;
-    color: var(--night);
+    color: var(--ink);
     cursor: pointer;
   }
   .menu-toggle:hover {

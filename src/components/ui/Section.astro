@@ -4,13 +4,13 @@
  *
  *   <Section tone="tint" labelledby="board-heading"> ... </Section>
  *
- * tone:       default (page background) | white | tint (soft salmon wash) | night (dark)
+ * tone:       default (page background) | alt (slightly lifted) | tint (warm wash) | night (darkest band)
  * labelledby: the id of the section's heading, so screen readers can announce it
  * padTop / padBottom: turn off the extra space when sections should sit tight together
  * divider:    thin line along the top edge
  */
 interface Props {
-  tone?: 'default' | 'white' | 'tint' | 'night';
+  tone?: 'default' | 'alt' | 'tint' | 'night';
   id?: string;
   labelledby?: string;
   /** Use instead of `labelledby` when the section has no visible heading. */
@@ -63,13 +63,13 @@ const {
   .divider {
     border-top: 1px solid var(--line);
   }
-  .section--white {
-    background: var(--white);
+  .section--alt {
+    background: var(--surface);
   }
   .section--tint {
-    background: var(--salmon-wash);
+    background: var(--wash);
   }
   .section--night {
-    background: var(--night);
+    background: var(--band);
   }
 </style>

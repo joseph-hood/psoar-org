@@ -1,43 +1,84 @@
 ---
 /**
- * Brand — the PSoAR logo.
- *   tone="light" (header): the winged PSoAR wordmark.
- *   tone="dark"  (footer): the round "Psychedelic Society of Arkansas" seal.
+ * Brand — the PSoAR logo (Arkansas outline, bird and PSoAR lettering) with the
+ * organization's name beside it. Used once, top left in the header.
  *
- * The images are decorative (alt=""): the link around them carries the
- * organization's name for screen readers.
- * Logo files live in src/assets/brand/.
+ * The logo is well known, so the site uses only this one form of it: the
+ * version drawn for dark backgrounds in dark mode, and the original
+ * light-background version in light mode. No wordmark-only, seal or cropped
+ * variants. Files: src/assets/brand/.
+ *
+ * The images are decorative (alt=""): the link around them carries the name.
  */
 import { Image } from 'astro:assets';
-import wordmark from '../../assets/brand/psoar-wordmark.webp';
-import seal from '../../assets/brand/psoar-seal.svg';
+import logoDark from '../../assets/brand/psoar-logo-dark.svg';
+import logoLight from '../../assets/brand/psoar-logo-light.png';
 
-interface Props {
-  tone?: 'light' | 'dark';
-}
-const { tone = 'light' } = Astro.props;
+const height = 64;
 ---
 
-{
-  tone === 'light' ? (
-    <Image src={wordmark} alt="" height={36} densities={[1, 2, 3]} class="wordmark" loading="eager" />
-  ) : (
-    <img src={seal.src} alt="" width="104" height="104" class="seal" loading="lazy" decoding="async" />
-  )
-}
+<span class="brand">
+  <img
+    src={logoDark.src}
+    alt=""
+    height={height}
+    width={Math.round((height * logoDark.width) / logoDark.height)}
+    class="logo logo--dark"
+  />
+  <Image src={logoLight} alt="" height={height} densities={[1, 2, 3]} class="logo logo--light" loading="eager" />
+  <span class="name">
+    <span>Psychedelic Society</span>
+    <span>of Arkansas</span>
+  </span>
+</span>
 
 <style>
-  .wordmark {
-    height: 36px;
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo {
+    height: 50px;
     width: auto;
   }
-  @media (max-width: 400px) {
-    .wordmark {
-      height: 30px;
+  @media (min-width: 900px) {
+    .logo {
+      height: 64px;
     }
   }
-  .seal {
-    width: 104px;
-    height: 104px;
+  .logo--light {
+    display: none;
+  }
+  :global(:root[data-theme='light']) .logo--dark {
+    display: none;
+  }
+  :global(:root[data-theme='light']) .logo--light {
+    display: block;
+  }
+  .name {
+    display: none;
+    flex-direction: column;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+  @media (min-width: 1040px) {
+    .name {
+      display: flex;
+    }
+  }
+  @media (max-width: 400px) {
+    .logo {
+      height: 44px;
+    }
+  }
+  @media (min-width: 1040px) {
+    .name {
+      font-size: 15px;
+    }
   }
 </style>

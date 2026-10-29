@@ -10,7 +10,7 @@ interface Props {
   fill?: string;
   class?: string;
 }
-const { fill = 'var(--paper)', class: className } = Astro.props;
+const { fill = 'var(--bg)', class: className } = Astro.props;
 ---
 
 <svg class:list={['ridges', className]} viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true" focusable="false">

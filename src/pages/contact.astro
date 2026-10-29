@@ -153,7 +153,7 @@ const configured = Boolean(action && Object.values(fields).every(Boolean));
     gap: 18px;
     padding: clamp(20px, 3vw, 32px);
     border-radius: var(--radius-lg);
-    background: var(--white);
+    background: var(--surface);
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
   }
@@ -173,7 +173,7 @@ const configured = Boolean(action && Object.values(fields).every(Boolean));
     font-size: 15.5px;
   }
   .req {
-    color: var(--salmon-ink);
+    color: var(--accent-ink);
   }
   input,
   textarea {
@@ -181,7 +181,7 @@ const configured = Boolean(action && Object.values(fields).every(Boolean));
     padding: 11px 14px;
     border: 1px solid var(--field-border);
     border-radius: var(--radius);
-    background: var(--white);
+    background: var(--surface);
     color: var(--ink);
     font-weight: 400;
   }
@@ -192,7 +192,7 @@ const configured = Boolean(action && Object.values(fields).every(Boolean));
   }
   input:disabled,
   textarea:disabled {
-    background: var(--mist);
+    background: var(--surface-2);
   }
   textarea {
     resize: vertical;
@@ -238,11 +238,11 @@ const configured = Boolean(action && Object.values(fields).every(Boolean));
     gap: 8px;
     padding: 24px;
     border-radius: var(--radius-lg);
-    background: var(--white);
+    background: var(--surface);
     border: 1px solid var(--line);
   }
   .panel :global(svg) {
-    color: var(--salmon-ink);
+    color: var(--accent-ink);
   }
   .panel h2 {
     font-family: var(--font-display);

@@ -14,7 +14,7 @@ import pathLogo from '../../assets/partners/path.svg';
 const logos = { nsmh: nsmhLogo, path: pathLogo };
 ---
 
-<Section tone="white" labelledby="partners-heading">
+<Section tone="alt" labelledby="partners-heading">
   <SectionHeading id="partners-heading" eyebrow="Partners" title="Stronger together" />
   <ul class="partners" role="list">
     {
@@ -58,7 +58,7 @@ const logos = { nsmh: nsmhLogo, path: pathLogo };
     gap: 20px;
     padding: clamp(20px, 3vw, 28px);
     border-radius: var(--radius-lg);
-    background: var(--paper);
+    background: var(--surface-2);
     border: 1px solid var(--line);
   }
   .logo {
@@ -67,7 +67,7 @@ const logos = { nsmh: nsmhLogo, path: pathLogo };
     height: 88px;
     border-radius: 999px;
     overflow: hidden;
-    background: var(--white);
+    background: #fff; /* partner logos are drawn for white */
     box-shadow: var(--shadow);
   }
   .logo :global(img) {
@@ -90,7 +90,7 @@ const logos = { nsmh: nsmhLogo, path: pathLogo };
     font-weight: 900;
     font-size: clamp(20px, 2vw, 24px);
     line-height: 1.2;
-    color: var(--night);
+    color: var(--ink);
   }
   .text {
     color: var(--text);
@@ -110,19 +110,21 @@ const logos = { nsmh: nsmhLogo, path: pathLogo };
     border: 1px solid var(--line-strong);
     font-weight: 500;
     font-size: 15px;
-    color: var(--night);
+    color: var(--ink);
     text-decoration: none;
   }
   .link:hover {
-    border-color: var(--night);
-    color: var(--night);
+    border-color: var(--ink);
+    color: var(--ink);
   }
   .link--main {
     background: var(--salmon);
     border-color: var(--salmon);
+    color: var(--on-accent);
   }
   .link--main:hover {
     background: var(--salmon-hover);
     border-color: var(--salmon-hover);
+    color: var(--on-accent);
   }
 </style>

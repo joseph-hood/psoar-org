@@ -1,47 +1,52 @@
 /* ==========================================================================
    Psychedelic Society of Arkansas — global styles
-   Brand colors come from the WordPress site's Elementor kit (marked "brand");
-   the rest were added for text, backgrounds and accessible contrast.
+   Dark mode is the default. A visitor can switch to light mode with the
+   sun/moon button in the header (remembered in their browser).
+   Colours are set once per theme below; components only use the role names
+   (--bg, --surface, --ink, --text, --link …), so both themes stay in step.
    Component-specific styles live inside each component file.
    ========================================================================== */
 
 :root {
-  /* --- Brand colors ---
+  /* --- Brand colours (same in both themes) ---
      The Arkansas-sunset spectrum: twilight indigo through violet, pink and
      salmon, plus the logo's blues and orange. No greens: the bright logo green
-     (#a5c161) appears only inside the logo files themselves. */
+     (#a5c161) appears only inside the logo itself. */
   --salmon: #f19677; /* main buttons, highlights */
+  --salmon-hover: #f4ab92;
   --pink: #ef8994;
   --mauve: #c485a2;
   --violet: #9183a4;
-  --orange: #c96e44; /* the "o" in the PSoAR wordmark */
-  --blue: #2f6a96; /* PSoAR wordmark blue */
+  --orange: #c96e44;
+  --blue: #2f6a96;
   --sky: #99cef2; /* light blue from the logo */
   --sky-deep: #3e8bc1; /* deep blue from the logo */
-  --night: #1c1b33; /* twilight: dark sections, main text */
+  --night: #1c1b33; /* twilight indigo (photo overlays, the sunset gradient) */
   --dusk: #34305a; /* deep violet dusk */
-  --mist: #f3f2f3;
-
-  /* --- Added for text, backgrounds and contrast --- */
-  --salmon-hover: #f4ab92;
-  --salmon-wash: #fdeee8;
-  --salmon-ink: #a8472b; /* salmon dark enough for small text on light backgrounds */
-  --link: var(--blue); /* 5.4:1 on the paper background */
-  --link-hover: #234f71;
-  --paper: #fbf8f4; /* page background */
-  --white: #ffffff;
-  --ink: var(--night); /* main text */
-  --text: #3d3f52; /* secondary text */
-  --text-subtle: #5e6075; /* captions, small print */
-  --on-dark: #ecebf3; /* body text on night/dusk */
+  --on-accent: #1c1b33; /* text on salmon buttons */
+  --on-dark: #ecebf3; /* body text on the dark bands (Get involved, footer) */
   --on-dark-subtle: #bdbbd0;
 
-  --line: rgba(28, 27, 51, 0.12);
-  --line-strong: rgba(28, 27, 51, 0.22);
-  --field-border: #7f8193; /* 3:1 against white, as WCAG requires for inputs */
-
-  /* The sunset used in the hero, page headers and the logo mark. */
+  /* The sunset used in the hero and page headers. */
   --sunset: linear-gradient(180deg, #1c1b33 0%, #34305a 34%, #9183a4 58%, #c485a2 70%, #ef8994 82%, #f19677 100%);
+
+  /* --- Dark theme (default) --- */
+  color-scheme: dark;
+  --bg: #16152b; /* page background */
+  --surface: #201f3c; /* cards, alternate sections */
+  --surface-2: #29274a; /* cards inside alternate sections */
+  --band: #0f0e20; /* the darkest bands: Get involved, footer */
+  --wash: #2a2142; /* warm tint section, date tiles */
+  --ink: #f4f2fa; /* headings, main text */
+  --text: #cfcce2; /* body text */
+  --text-subtle: #a9a6c2; /* captions, small print */
+  --accent-ink: #f6a98d; /* small salmon text (eyebrows, icons) */
+  --link: var(--sky);
+  --link-hover: #c7e5f9;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.24);
+  --field-border: #8a87a6; /* 3:1 against the surface, as WCAG requires for inputs */
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
 
   /* --- Typography --- */
   --font-display: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -53,10 +58,30 @@
   --section-y: clamp(56px, 7vw, 96px); /* top/bottom section padding */
   --radius: 10px;
   --radius-lg: 18px;
-  --shadow: 0 1px 2px rgba(28, 27, 51, 0.06), 0 8px 24px -12px rgba(28, 27, 51, 0.18);
 
-  /* Colour of the keyboard focus ring (overridden on dark backgrounds) */
-  --focus: var(--link);
+  /* Colour of the keyboard focus ring */
+  --focus: var(--salmon);
+}
+
+/* --- Light theme (chosen with the header button) --- */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #fbf8f4;
+  --surface: #ffffff;
+  --surface-2: #f5f1ec;
+  --band: #1c1b33;
+  --wash: #fdeee8;
+  --ink: #1c1b33;
+  --text: #3d3f52;
+  --text-subtle: #5e6075;
+  --accent-ink: #a8472b;
+  --link: var(--blue); /* 5.4:1 on the light background */
+  --link-hover: #234f71;
+  --line: rgba(28, 27, 51, 0.12);
+  --line-strong: rgba(28, 27, 51, 0.22);
+  --field-border: #7f8193;
+  --shadow: 0 1px 2px rgba(28, 27, 51, 0.06), 0 8px 24px -12px rgba(28, 27, 51, 0.18);
+  --focus: var(--blue);
 }
 
 /* --- Reset ---------------------------------------------------------------- */
@@ -69,12 +94,12 @@
 html {
   -webkit-text-size-adjust: 100%;
   /* Keeps in-page anchors from hiding under the sticky header */
-  scroll-padding-top: 96px;
+  scroll-padding-top: 104px;
 }
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 17px;
@@ -133,7 +158,7 @@ textarea {
   outline-offset: 3px;
 }
 
-/* Use on any section with a dark background so the ring stays visible */
+/* Use on any band that is dark in both themes (hero, page headers, footer) */
 .on-dark {
   --focus: var(--salmon);
   color: var(--on-dark);
@@ -153,7 +178,7 @@ textarea {
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--salmon-ink);
+  color: var(--accent-ink);
 }
 .on-dark .eyebrow {
   color: var(--salmon);
@@ -166,7 +191,7 @@ textarea {
   font-size: clamp(30px, 3.4vw, 44px);
   line-height: 1.1;
   letter-spacing: -0.01em;
-  color: var(--night);
+  color: var(--ink);
 }
 .on-dark .h2 {
   color: #fff;

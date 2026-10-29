@@ -9,7 +9,6 @@ import Mail from '@lucide/astro/icons/mail';
 import { mainNav } from '../../data/nav';
 import { SITE } from '../../config/site';
 import { partners } from '../../data/partners';
-import Brand from './Brand.astro';
 
 const involved = [
   { label: 'Newsletter', href: SITE.newsletterUrl, external: true },
@@ -24,9 +23,7 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="top">
       <div class="about">
-        <a class="brand-link" href="/" aria-label="Psychedelic Society of Arkansas, home">
-          <Brand tone="dark" />
-        </a>
+        <p class="footer-name">Psychedelic Society of Arkansas</p>
         <p>Education, risk reduction, and community outreach around psychedelics and plant medicine in Arkansas.</p>
         <div class="social">
           <a href={SITE.facebookUrl} target="_blank" rel="noopener" aria-label="PSoAR on Facebook (opens in a new tab)">
@@ -109,7 +106,7 @@ const year = new Date().getFullYear();
 
 <style>
   .site-footer {
-    background: var(--night);
+    background: var(--band);
     padding-block: clamp(48px, 6vw, 72px) 32px;
     font-size: 15.5px;
   }
@@ -139,19 +136,6 @@ const year = new Date().getFullYear();
     flex-direction: column;
     gap: 16px;
     max-width: 36ch;
-  }
-  .about :global(.seal) {
-    width: 112px;
-    height: 112px;
-  }
-  .about p {
-    color: var(--on-dark-subtle);
-  }
-  .brand-link {
-    display: inline-flex;
-    align-self: flex-start;
-    text-decoration: none;
-    border-radius: var(--radius);
   }
   .social {
     display: flex;

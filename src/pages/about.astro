@@ -9,8 +9,6 @@ import Section from '../components/ui/Section.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import GetInvolved from '../components/sections/GetInvolved.astro';
 import Partners from '../components/sections/Partners.astro';
-import { Image } from 'astro:assets';
-import badge from '../assets/brand/psoar-state-badge.png';
 import { pillars } from '../data/about';
 import { SITE } from '../config/site';
 ---
@@ -39,12 +37,9 @@ import { SITE } from '../config/site';
     </dl>
   </Section>
 
-  <Section tone="white" labelledby="nonprofit-heading">
+  <Section tone="alt" labelledby="nonprofit-heading">
     <div class="nonprofit">
-      <div>
-        <SectionHeading id="nonprofit-heading" eyebrow="Nonprofit status" title="A 501(c)(3) public charity" />
-        <Image src={badge} alt="The PSoAR logo: a bird with outstretched wings over the outline of Arkansas" width={320} densities={[1, 2]} class="badge" />
-      </div>
+      <SectionHeading id="nonprofit-heading" eyebrow="Nonprofit status" title="A 501(c)(3) public charity" />
       <div class="nonprofit-text">
         <p>
           The Psychedelic Society of Arkansas is recognized as a tax-exempt public charity under section 501(c)(3) of
@@ -78,7 +73,7 @@ import { SITE } from '../config/site';
   .pillar {
     padding: 28px;
     border-radius: var(--radius-lg);
-    background: var(--white);
+    background: var(--surface);
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
     border-top: 4px solid var(--salmon);
@@ -109,11 +104,6 @@ import { SITE } from '../config/site';
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
     }
   }
-  .nonprofit :global(.badge) {
-    width: min(320px, 80%);
-    height: auto;
-    margin-top: 8px;
-  }
   .nonprofit-text {
     display: grid;
     gap: 14px;
@@ -122,6 +112,6 @@ import { SITE } from '../config/site';
   }
   .ein {
     font-weight: 500;
-    color: var(--night);
+    color: var(--ink);
   }
 </style>

@@ -109,7 +109,7 @@ const blurb = summary(event);
     grid-template-columns: auto minmax(0, 1fr);
     gap: 18px;
     padding: 20px;
-    background: var(--white);
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow);
@@ -129,7 +129,7 @@ const blurb = summary(event);
     width: 68px;
     height: 76px;
     border-radius: 14px;
-    background: linear-gradient(160deg, var(--salmon-wash), #f6e3ec);
+    background: var(--wash);
     border: 1px solid rgba(241, 150, 119, 0.35);
     line-height: 1;
     text-align: center;
@@ -140,13 +140,13 @@ const blurb = summary(event);
     font-weight: 900;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--salmon-ink);
+    color: var(--accent-ink);
   }
   .day {
     font-family: var(--font-display);
     font-size: 30px;
     font-weight: 900;
-    color: var(--night);
+    color: var(--ink);
     margin: 3px 0 2px;
   }
   .weekday {
@@ -164,7 +164,7 @@ const blurb = summary(event);
     font-weight: 900;
     font-size: clamp(19px, 1.7vw, 22px);
     line-height: 1.2;
-    color: var(--night);
+    color: var(--ink);
   }
   .meta {
     display: grid;
@@ -181,7 +181,7 @@ const blurb = summary(event);
     flex: none;
     position: relative;
     top: 2px;
-    color: var(--salmon-ink);
+    color: var(--accent-ink);
   }
   .meta a {
     color: inherit;
@@ -214,7 +214,7 @@ const blurb = summary(event);
     margin-top: 10px;
     padding: 14px 16px;
     border-radius: var(--radius);
-    background: var(--paper);
+    background: var(--surface-2);
     font-size: 15.5px;
     color: var(--text);
     display: grid;
@@ -236,21 +236,21 @@ const blurb = summary(event);
     border: 1px solid var(--line-strong);
     font-size: 14px;
     font-weight: 500;
-    color: var(--night);
+    color: var(--ink);
     text-decoration: none;
   }
   .action:hover {
-    border-color: var(--night);
-    color: var(--night);
+    border-color: var(--ink);
+    color: var(--ink);
   }
   .action--main {
-    background: var(--night);
-    border-color: var(--night);
-    color: #fff;
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
   }
   .action--main:hover {
-    background: var(--dusk);
-    color: #fff;
+    background: color-mix(in srgb, var(--ink) 85%, var(--bg));
+    color: var(--bg);
   }
   .compact .action:not(.action--main) {
     display: none;
