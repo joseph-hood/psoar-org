@@ -13,6 +13,7 @@ on GitHub Pages. Merging a pull request into `main` publishes the site; see [doc
 | Reading list and the 3 featured articles    | `src/data/articles.ts`                                   |
 | Mission / vision / purpose                  | `src/data/about.ts`                                      |
 | Partner organizations (NSMH, PATH)          | `src/data/partners.ts`                                   |
+| Chapters (location, Facebook link)          | `src/data/chapters.ts` (seals in `src/assets/chapters/`) |
 | Logos and photos                            | `src/assets/`                                            |
 | Email, store, chapter form, Facebook, EIN   | `src/config/site.ts`                                     |
 | Contact form connection                     | `src/config/site.ts` → `contactForm` (see below)          |
@@ -84,5 +85,7 @@ If you're offline, `npm run dev` keeps the last downloaded events (or shows the 
 - [ ] **Connect the contact form** (above).
 - [ ] **Refresh the reading list.** The articles carried over from the old site date from 2008–2018. Add newer
       ones at the top of `src/data/articles.ts` and mark the best three `featured: true`.
+- [ ] **Chapter Facebook links.** Central Arkansas and Eureka Springs link to a Facebook search for now; put each
+      group's own address in `src/data/chapters.ts`. Fayetteville shows "coming soon" until it has one.
 - [ ] **Video titles** on the Resources page (`title` in `src/data/resources.ts`, for screen readers).
 - [ ] **Launch steps** in [docs/DEPLOY.md](docs/DEPLOY.md): public calendar check, Pages, DNS, `noindex: false`.

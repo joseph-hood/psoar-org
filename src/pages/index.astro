@@ -2,7 +2,7 @@
 /**
  * Home page. Address: /
  * Sections, top to bottom: hero (with the next event), upcoming events, what
- * we're about, latest newsletter posts, featured reading, partners, get involved.
+ * we're about, chapters, latest newsletter posts, featured reading, partners, get involved.
  */
 import ArrowRight from '@lucide/astro/icons/arrow-right';
 import Clock from '@lucide/astro/icons/clock';
@@ -21,6 +21,7 @@ import ArticleCards from '../components/sections/ArticleCards.astro';
 import NewsletterPosts from '../components/sections/NewsletterPosts.astro';
 import GetInvolved from '../components/sections/GetInvolved.astro';
 import Partners from '../components/sections/Partners.astro';
+import Chapters from '../components/sections/Chapters.astro';
 import { Image } from 'astro:assets';
 import heroPhoto from '../assets/photos/ozarks-sunset.avif';
 import { endsAt, getEvents, startParts, whenText } from '../lib/events';
@@ -46,9 +47,7 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
       loading="eager"
       fetchpriority="high"
     />
-    <div class="hero-tint" aria-hidden="true"></div>
     <div class="hero-shade" aria-hidden="true"></div>
-    <div class="stars" aria-hidden="true"></div>
     <div class="container hero-inner">
       <div class="hero-text">
         <p class="eyebrow">Psychedelic Society of Arkansas</p>
@@ -142,7 +141,9 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     </ul>
   </Section>
 
-  <Section labelledby="newsletter-heading">
+  <Chapters />
+
+  <Section tone="alt" labelledby="newsletter-heading">
     <SectionHeading
       id="newsletter-heading"
       eyebrow="Newsletter"
@@ -190,9 +191,8 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     padding-top: clamp(56px, 8vw, 112px);
     padding-bottom: clamp(120px, 16vw, 220px);
   }
-  /* The Ozarks photo, recoloured into the sunset palette: the photo is turned
-     to greyscale, then the tint layer colours it (no greens) and darkens the
-     top so the white text stays readable. */
+  /* The Ozarks sunset photo in its own colours, with a soft shade on the left
+     and top so the white text stays readable. */
   .hero :global(.hero-photo) {
     position: absolute;
     inset: 0;
@@ -200,37 +200,19 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     height: 100%;
     object-fit: cover;
     object-position: center 35%;
-    filter: grayscale(1) contrast(1.15) brightness(0.95);
+    filter: saturate(0.9);
   }
-  /* Colours the greyscale photo with the sunset (keeps its light and shade). */
-  .hero-tint {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, #1d2635 0%, #3d4a66 40%, #c485a2 65%, #ef8994 82%, #f19677 100%);
-    mix-blend-mode: color;
-  }
-  /* Darkens the sky behind the text. */
   .hero-shade {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(90deg, rgba(15, 18, 23, 0.7) 0%, rgba(15, 18, 23, 0.35) 55%, rgba(15, 18, 23, 0.15) 100%),
-      linear-gradient(180deg, rgba(15, 18, 23, 0.55) 0%, rgba(15, 18, 23, 0) 60%);
+      linear-gradient(90deg, rgba(25, 25, 25, 0.78) 0%, rgba(25, 25, 25, 0.45) 50%, rgba(25, 25, 25, 0.12) 100%),
+      linear-gradient(180deg, rgba(25, 25, 25, 0.45) 0%, rgba(25, 25, 25, 0) 45%, rgba(25, 25, 25, 0.35) 100%);
   }
-  /* A few faint stars in the night sky. */
-  .stars {
-    position: absolute;
-    inset: 0 0 50%;
-    background-image:
-      radial-gradient(1.5px 1.5px at 12% 18%, rgba(255, 255, 255, 0.7), transparent),
-      radial-gradient(1px 1px at 27% 42%, rgba(255, 255, 255, 0.5), transparent),
-      radial-gradient(1.5px 1.5px at 44% 12%, rgba(255, 255, 255, 0.6), transparent),
-      radial-gradient(1px 1px at 63% 30%, rgba(255, 255, 255, 0.5), transparent),
-      radial-gradient(1.5px 1.5px at 78% 9%, rgba(255, 255, 255, 0.7), transparent),
-      radial-gradient(1px 1px at 88% 36%, rgba(255, 255, 255, 0.45), transparent),
-      radial-gradient(1px 1px at 6% 52%, rgba(255, 255, 255, 0.4), transparent),
-      radial-gradient(1px 1px at 55% 55%, rgba(255, 255, 255, 0.35), transparent);
-    pointer-events: none;
+  @media (max-width: 959px) {
+    .hero-shade {
+      background: linear-gradient(180deg, rgba(25, 25, 25, 0.7) 0%, rgba(25, 25, 25, 0.55) 60%, rgba(25, 25, 25, 0.4) 100%);
+    }
   }
   .hero-inner {
     position: relative;
@@ -303,7 +285,7 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     font-weight: 900;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--salmon);
+    color: var(--accent);
   }
   .next-row {
     display: flex;
@@ -319,7 +301,7 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     width: 58px;
     height: 62px;
     border-radius: 12px;
-    background: var(--salmon);
+    background: var(--accent);
     color: var(--on-accent);
     font-family: var(--font-display);
     font-size: 11px;
@@ -350,7 +332,7 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     flex: none;
     position: relative;
     top: 2px;
-    color: var(--salmon);
+    color: var(--accent);
   }
   .next-more {
     display: inline-flex;
@@ -358,7 +340,7 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     gap: 6px;
     margin-top: 4px;
     font-weight: 500;
-    color: var(--salmon);
+    color: var(--accent);
   }
 
   /* --- Events ---------------------------------------------------------- */
@@ -393,7 +375,7 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     width: 48px;
     height: 48px;
     border-radius: 14px;
-    background: linear-gradient(150deg, var(--salmon), var(--pink) 55%, var(--mauve));
+    background: var(--accent);
     color: var(--on-accent);
   }
   .pillar h3 {

@@ -9,6 +9,8 @@ import Section from '../components/ui/Section.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import GetInvolved from '../components/sections/GetInvolved.astro';
 import Partners from '../components/sections/Partners.astro';
+import Chapters from '../components/sections/Chapters.astro';
+import Logo from '../components/ui/Logo.astro';
 import { pillars } from '../data/about';
 import { SITE } from '../config/site';
 ---
@@ -37,6 +39,35 @@ import { SITE } from '../config/site';
     </dl>
   </Section>
 
+  <Section tone="alt" labelledby="bluebird-heading">
+    <div class="bluebird">
+      <div class="bluebird-logo">
+        <Logo
+          height={260}
+          alt="The PSoAR logo: an Eastern Bluebird whose body and wings are formed by the letters PSoAR, inside the outline of Arkansas"
+        />
+      </div>
+      <div class="bluebird-text">
+        <SectionHeading id="bluebird-heading" eyebrow="Our logo" title="Why a bluebird?" />
+        <p>
+          Our logo was inspired by the Eastern Bluebird—once nearly extinct in Arkansas, now thriving again thanks to
+          community care and stewardship. Its comeback mirrors what we believe in: resilience, renewal, and the power of
+          people coming together to support healing and awareness.
+        </p>
+        <p>
+          PSoAR (pronounced “Soar”) forms the body and wings of the bluebird, symbolizing uplift, growth, and the shared
+          journey toward well-being through education about entheogenic plants.
+        </p>
+        <p>
+          Across many traditions, the bluebird represents happiness, health, and hope—beautiful reflections of what we
+          are working toward here in Arkansas.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Chapters />
+
   <Section tone="alt" labelledby="nonprofit-heading">
     <div class="nonprofit">
       <SectionHeading id="nonprofit-heading" eyebrow="Nonprofit status" title="A 501(c)(3) public charity" />
@@ -54,7 +85,7 @@ import { SITE } from '../config/site';
     </div>
   </Section>
 
-  <Partners />
+  <Partners tone="default" />
 
   <GetInvolved />
 </BaseLayout>
@@ -76,13 +107,13 @@ import { SITE } from '../config/site';
     background: var(--surface);
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
-    border-top: 4px solid var(--salmon);
+    border-top: 4px solid var(--accent);
   }
   .pillar:nth-child(2) {
-    border-top-color: var(--pink);
+    border-top-color: var(--blue);
   }
   .pillar:nth-child(3) {
-    border-top-color: var(--violet);
+    border-top-color: var(--purple);
   }
   .pillar dt {
     font-family: var(--font-display);
@@ -95,12 +126,71 @@ import { SITE } from '../config/site';
     font-size: 17.5px;
   }
 
+  .bluebird {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .bluebird {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: 64px;
+    }
+  }
+  .bluebird-logo {
+    display: flex;
+    justify-content: center;
+  }
+  .bluebird-logo :global(.logo) {
+    width: min(100%, 356px);
+    height: auto;
+  }
+  .bluebird-text {
+    display: grid;
+    gap: 14px;
+    color: var(--text);
+    font-size: 17.5px;
+    max-width: 62ch;
+  }
+  .bluebird-text :global(.heading) {
+    margin-bottom: 4px;
+  }
   .nonprofit {
     display: grid;
+    align-items: start;
     gap: 8px 64px;
   }
   @media (min-width: 900px) {
-    .nonprofit {
+    .bluebird {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .bluebird {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: 64px;
+    }
+  }
+  .bluebird-logo {
+    display: flex;
+    justify-content: center;
+  }
+  .bluebird-logo :global(.logo) {
+    width: min(100%, 356px);
+    height: auto;
+  }
+  .bluebird-text {
+    display: grid;
+    gap: 14px;
+    color: var(--text);
+    font-size: 17.5px;
+    max-width: 62ch;
+  }
+  .bluebird-text :global(.heading) {
+    margin-bottom: 4px;
+  }
+  .nonprofit {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
     }
   }

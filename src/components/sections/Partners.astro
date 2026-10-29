@@ -12,9 +12,14 @@ import nsmhLogo from '../../assets/partners/nsmh.png';
 import pathLogo from '../../assets/partners/path.svg';
 
 const logos = { nsmh: nsmhLogo, path: pathLogo };
+
+interface Props {
+  tone?: 'default' | 'alt';
+}
+const { tone = 'alt' } = Astro.props;
 ---
 
-<Section tone="alt" labelledby="partners-heading">
+<Section tone={tone} labelledby="partners-heading">
   <SectionHeading id="partners-heading" eyebrow="Partners" title="Stronger together" />
   <ul class="partners" role="list">
     {
@@ -58,8 +63,11 @@ const logos = { nsmh: nsmhLogo, path: pathLogo };
     gap: 20px;
     padding: clamp(20px, 3vw, 28px);
     border-radius: var(--radius-lg);
-    background: var(--surface-2);
+    background: var(--surface);
     border: 1px solid var(--line);
+  }
+  :global(.section--alt) .partner {
+    background: var(--surface-2);
   }
   .logo {
     display: block;
@@ -118,13 +126,13 @@ const logos = { nsmh: nsmhLogo, path: pathLogo };
     color: var(--ink);
   }
   .link--main {
-    background: var(--salmon);
-    border-color: var(--salmon);
+    background: var(--accent);
+    border-color: var(--accent);
     color: var(--on-accent);
   }
   .link--main:hover {
-    background: var(--salmon-hover);
-    border-color: var(--salmon-hover);
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
     color: var(--on-accent);
   }
 </style>
