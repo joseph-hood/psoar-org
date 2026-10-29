@@ -1,0 +1,19 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# calendar + newsletter data, fetched fresh on every build (scripts/fetch-feeds.mjs)
+src/data/feeds/*.json
+
+# secrets (none are needed; keep it that way)
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+
+# Python
+__pycache__/

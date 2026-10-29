@@ -1,0 +1,75 @@
+---
+/**
+ * Section — a full-width band of the page with a centered, padded container.
+ *
+ *   <Section tone="tint" labelledby="board-heading"> ... </Section>
+ *
+ * tone:       default (page background) | white | tint (soft salmon wash) | night (dark)
+ * labelledby: the id of the section's heading, so screen readers can announce it
+ * padTop / padBottom: turn off the extra space when sections should sit tight together
+ * divider:    thin line along the top edge
+ */
+interface Props {
+  tone?: 'default' | 'white' | 'tint' | 'night';
+  id?: string;
+  labelledby?: string;
+  /** Use instead of `labelledby` when the section has no visible heading. */
+  label?: string;
+  padTop?: boolean;
+  padBottom?: boolean;
+  divider?: boolean;
+  class?: string;
+}
+
+const {
+  tone = 'default',
+  id,
+  labelledby,
+  label,
+  padTop = true,
+  padBottom = true,
+  divider = false,
+  class: className,
+} = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledby}
+  aria-label={label}
+  class:list={[
+    'section',
+    `section--${tone}`,
+    { 'no-top': !padTop, 'no-bottom': !padBottom, divider },
+    tone === 'night' && 'on-dark',
+    className,
+  ]}
+>
+  <div class="container">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--section-y);
+  }
+  .no-top {
+    padding-top: 0;
+  }
+  .no-bottom {
+    padding-bottom: 0;
+  }
+  .divider {
+    border-top: 1px solid var(--line);
+  }
+  .section--white {
+    background: var(--white);
+  }
+  .section--tint {
+    background: var(--salmon-wash);
+  }
+  .section--night {
+    background: var(--night);
+  }
+</style>

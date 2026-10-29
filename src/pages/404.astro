@@ -1,0 +1,28 @@
+---
+/** Shown for any address that doesn't exist. GitHub Pages serves 404.html automatically. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import Section from '../components/ui/Section.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout title="Page not found" noindex>
+  <PageHeader eyebrow="404" title="This trail doesn’t go anywhere">
+    <p>The page you were looking for has moved or no longer exists.</p>
+  </PageHeader>
+  <Section padTop={false} label="Where to next">
+    <div class="actions">
+      <Button href="/">Go to the home page</Button>
+      <Button href="/events" variant="outline">See upcoming events</Button>
+      <Button href="/resources" variant="outline">Browse resources</Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>

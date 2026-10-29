@@ -1,0 +1,53 @@
+---
+/**
+ * Brand — logo icon + "PSoAR" wordmark + full name. Used in the header and footer.
+ * tone="dark" is for dark backgrounds (white text).
+ */
+import Mark from '../ui/Mark.astro';
+
+interface Props {
+  tone?: 'light' | 'dark';
+}
+const { tone = 'light' } = Astro.props;
+---
+
+<span class:list={['brand', `brand--${tone}`]}>
+  <Mark size={44} />
+  <span class="words">
+    <span class="short">PSoAR</span>
+    <span class="long">Psychedelic Society of Arkansas</span>
+  </span>
+</span>
+
+<style>
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .words {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+  .short {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 0.02em;
+    color: var(--night);
+  }
+  .long {
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-subtle);
+    margin-top: 3px;
+  }
+  .brand--dark .short {
+    color: #fff;
+  }
+  .brand--dark .long {
+    color: var(--on-dark-subtle);
+  }
+</style>

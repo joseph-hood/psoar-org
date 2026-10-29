@@ -1,0 +1,113 @@
+---
+/**
+ * About page. Address: /about
+ * Mission, vision and purpose come from src/data/about.ts.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import Section from '../components/ui/Section.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import GetInvolved from '../components/sections/GetInvolved.astro';
+import { pillars } from '../data/about';
+import { SITE } from '../config/site';
+---
+
+<BaseLayout
+  title="About"
+  description="The Psychedelic Society of Arkansas (PSoAR) is a 501(c)(3) nonprofit promoting education, risk reduction, and community outreach around psychedelics and plant medicine."
+>
+  <PageHeader eyebrow="About PSoAR" title="Education, community, and care">
+    <p>
+      The Psychedelic Society of Arkansas (pronounced “soar”; the P is silent) promotes education, risk reduction, and
+      community outreach in the area of psychedelics and plant medicine.
+    </p>
+  </PageHeader>
+
+  <Section padTop={false} label="Mission, vision, and purpose">
+    <dl class="pillars">
+      {
+        pillars.map((p) => (
+          <div class="pillar">
+            <dt>{p.title}</dt>
+            <dd>{p.text}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </Section>
+
+  <Section tone="white" labelledby="nonprofit-heading">
+    <div class="nonprofit">
+      <SectionHeading id="nonprofit-heading" eyebrow="Nonprofit status" title="A 501(c)(3) public charity" />
+      <div class="nonprofit-text">
+        <p>
+          The Psychedelic Society of Arkansas is recognized as a tax-exempt public charity under section 501(c)(3) of
+          the Internal Revenue Code. Contributions are deductible for federal income tax purposes to the extent allowed
+          by law.
+        </p>
+        <p class="ein">EIN: {SITE.ein}</p>
+        <p>
+          We offer education and community. Nothing we publish is medical or legal advice.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <GetInvolved />
+</BaseLayout>
+
+<style>
+  .pillars {
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 800px) {
+    .pillars {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+  .pillar {
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--salmon);
+  }
+  .pillar:nth-child(2) {
+    border-top-color: var(--pink);
+  }
+  .pillar:nth-child(3) {
+    border-top-color: var(--violet);
+  }
+  .pillar dt {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .pillar dd {
+    color: var(--text);
+    font-size: 17.5px;
+  }
+
+  .nonprofit {
+    display: grid;
+    gap: 8px 64px;
+  }
+  @media (min-width: 900px) {
+    .nonprofit {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    }
+  }
+  .nonprofit-text {
+    display: grid;
+    gap: 14px;
+    color: var(--text);
+  }
+  .ein {
+    font-weight: 500;
+    color: var(--night);
+  }
+</style>

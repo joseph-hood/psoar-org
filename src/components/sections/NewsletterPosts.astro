@@ -1,0 +1,136 @@
+---
+/**
+ * NewsletterPosts — the latest posts from our Substack (home page).
+ * If the feed is empty (e.g. it couldn't be downloaded), shows a subscribe prompt instead.
+ */
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import { getNewsletterPosts, postDate } from '../../lib/newsletter';
+import { SITE } from '../../config/site';
+import Button from '../ui/Button.astro';
+
+const posts = getNewsletterPosts(3);
+---
+
+{
+  posts.length > 0 ? (
+    <ul class="posts" role="list">
+      {posts.map((post) => (
+        <li class="post">
+          {post.image && (
+            <img class="cover" src={post.image} alt="" loading="lazy" decoding="async" width="600" height="315" />
+          )}
+          <div class="text">
+            <p class="date">{postDate(post)}</p>
+            <h3 class="title">
+              <a href={post.url} target="_blank" rel="noopener">
+                {post.title}
+                <span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            </h3>
+            {post.summary && <p class="summary">{post.summary}</p>}
+            <p class="read">
+              Read on Substack <ArrowUpRight size={15} aria-hidden="true" />
+            </p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <div class="fallback">
+      <p>News, event recaps, and reflections from our community, delivered to your inbox.</p>
+      <Button href={SITE.newsletterUrl} external>
+        Read the newsletter
+      </Button>
+    </div>
+  )
+}
+
+<style>
+  .posts {
+    display: grid;
+    gap: 20px;
+  }
+  @media (min-width: 800px) {
+    .posts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .post {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  .cover {
+    aspect-ratio: 1200 / 630;
+    width: 100%;
+    object-fit: cover;
+    background: var(--mist);
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 22px 22px;
+    flex: 1;
+  }
+  .date {
+    font-size: 13.5px;
+    color: var(--text-subtle);
+  }
+  .title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 1.25;
+  }
+  .title a {
+    color: var(--night);
+    text-decoration: none;
+  }
+  .title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .title a:focus-visible {
+    outline: none;
+  }
+  .post:focus-within {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+  }
+  .post:hover .title a {
+    text-decoration: underline;
+    text-decoration-color: var(--salmon);
+  }
+  .summary {
+    font-size: 15.5px;
+    color: var(--text);
+    flex: 1;
+  }
+  .read {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--link);
+  }
+  .fallback {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+    color: var(--text);
+  }
+</style>

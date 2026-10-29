@@ -1,0 +1,121 @@
+---
+/**
+ * EventList — upcoming events, optionally grouped under month headings.
+ *
+ *   <EventList events={events} limit={4} compact />       (home page)
+ *   <EventList events={events} grouped />                 (events page)
+ *
+ * When there are no events (or they've all passed since the last update) it
+ * shows a friendly message with a link to the calendar instead.
+ */
+import { type CalendarEvent, monthKey } from '../../lib/events';
+import { CALENDAR_LINKS } from '../../config/site';
+import EventCard from './EventCard.astro';
+
+interface Props {
+  events: CalendarEvent[];
+  limit?: number;
+  compact?: boolean;
+  grouped?: boolean;
+}
+const { events, limit, compact = false, grouped = false } = Astro.props;
+
+// On the home page, a few extra are rendered (hidden) so that if the first ones
+// pass before the next update, the script below can reveal the next ones.
+const shown = limit ? events.slice(0, limit + 3) : events;
+const groups = grouped
+  ? Object.entries(Object.groupBy(shown, monthKey) as Record<string, CalendarEvent[]>)
+  : [['', shown] as const];
+---
+
+<div class="event-list" data-event-list data-limit={limit}>
+  {
+    groups.map(([month, list]) => (
+      <section class="group" data-event-group aria-label={month || undefined}>
+        {month && <h2 class="month">{month}</h2>}
+        <ol class="cards" role="list">
+          {list.map((event) => (
+            <li data-event-item hidden={limit !== undefined && shown.indexOf(event) >= limit}>
+              <EventCard event={event} compact={compact} />
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))
+  }
+
+  <div class="empty" data-event-empty hidden={shown.length > 0}>
+    <p class="empty-title">No upcoming events on the calendar right now.</p>
+    <p>
+      New events are added regularly. Subscribe to the calendar below or to our newsletter, or
+      <a href={CALENDAR_LINKS.web} target="_blank" rel="noopener"
+        >check the calendar directly<span class="sr-only"> (opens in a new tab)</span></a
+      >.
+    </p>
+  </div>
+</div>
+
+<script>
+  // Hide events that have ended since the site was last built, then keep the
+  // list at its limit (home page) and drop month headings left empty.
+  for (const list of document.querySelectorAll<HTMLElement>('[data-event-list]')) {
+    const now = Date.now();
+    const limit = Number(list.dataset.limit) || Infinity;
+    let shown = 0;
+    for (const item of list.querySelectorAll<HTMLElement>('[data-event-item]')) {
+      const ends = Number(item.querySelector<HTMLElement>('[data-ends]')?.dataset.ends);
+      const keep = !(ends <= now) && shown < limit;
+      item.hidden = !keep;
+      if (keep) shown++;
+    }
+    for (const group of list.querySelectorAll<HTMLElement>('[data-event-group]')) {
+      group.hidden = !group.querySelector('[data-event-item]:not([hidden])');
+    }
+    const empty = list.querySelector<HTMLElement>('[data-event-empty]');
+    if (empty) empty.hidden = shown > 0;
+  }
+</script>
+
+<style>
+  .event-list {
+    display: grid;
+    gap: 40px;
+  }
+  .group {
+    display: grid;
+    gap: 16px;
+  }
+  .month {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--salmon-ink);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .cards {
+    display: grid;
+    gap: 16px;
+  }
+  [hidden] {
+    display: none !important;
+  }
+
+  .empty {
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    border: 1px dashed var(--line-strong);
+    background: var(--white);
+    color: var(--text);
+    display: grid;
+    gap: 6px;
+  }
+  .empty-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 19px;
+    color: var(--night);
+  }
+</style>

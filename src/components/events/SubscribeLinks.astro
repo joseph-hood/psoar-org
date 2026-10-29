@@ -1,0 +1,68 @@
+---
+/**
+ * SubscribeLinks — "follow the calendar" buttons for Google, Apple/Outlook,
+ * plus a link to Google's own view of the calendar.
+ */
+import CalendarPlus from '@lucide/astro/icons/calendar-plus';
+import { CALENDAR_LINKS } from '../../config/site';
+
+interface Props {
+  tone?: 'light' | 'dark';
+}
+const { tone = 'light' } = Astro.props;
+---
+
+<div class:list={['subscribe', `subscribe--${tone}`]}>
+  <p class="label">Never miss an event:</p>
+  <div class="links">
+    <a href={CALENDAR_LINKS.google} target="_blank" rel="noopener">
+      <CalendarPlus size={16} aria-hidden="true" /> Add to Google Calendar<span class="sr-only"> (opens in a new tab)</span>
+    </a>
+    <a href={CALENDAR_LINKS.ical}>
+      <CalendarPlus size={16} aria-hidden="true" /> Subscribe in Apple Calendar / Outlook
+    </a>
+  </div>
+</div>
+
+<style>
+  .subscribe {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    font-size: 15px;
+  }
+  .label {
+    font-weight: 500;
+    color: var(--text);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    color: var(--night);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .links a:hover {
+    border-color: var(--night);
+  }
+  .subscribe--dark .label {
+    color: var(--on-dark);
+  }
+  .subscribe--dark .links a {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+  .subscribe--dark .links a:hover {
+    border-color: #fff;
+  }
+</style>

@@ -1,0 +1,64 @@
+name: Deploy site to GitHub Pages
+
+# Pull requests: build the site and check it for mistakes (nothing is published).
+# Merges to main: the same checks, then publish the built site to GitHub Pages.
+# Every morning: rebuild and republish, so new Google Calendar events and
+#   Substack posts show up without anyone touching the code.
+# "Run workflow" button (Actions tab): the same, on demand. Use it after adding
+#   an event you want on the site right away.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '23 10 * * *' # 10:23 UTC = 4:23 or 5:23 am in Arkansas
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # When publishing, stop if the calendar or newsletter can't be downloaded,
+      # so an outage never replaces the live site with an empty events list.
+      FEEDS_STRICT: ${{ github.event_name == 'pull_request' && '0' || '1' }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Test the calendar and newsletter readers
+        run: npm test
+      - name: Check the code
+        run: npm run check
+      - name: Build (downloads the calendar and newsletter first)
+        run: npm run build
+      - name: Check for broken links
+        run: python3 tools/check-site.py
+      - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request'
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v6
+      - id: deployment
+        uses: actions/deploy-pages@v5
