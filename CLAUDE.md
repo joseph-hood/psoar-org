@@ -22,8 +22,9 @@ live, common edits, TODOs); keep it accurate when you change how things work.
 - Old WordPress addresses forward via `redirects` in `astro.config.mjs` (list in `src/data/old-urls.json`).
 - Switch in `src/config/site.ts`: `noindex` (true until launch). Don't change it unless asked.
 - Brand: an Arkansas-sunset spectrum with **no greens** (the client's rule). The only green allowed is the bright
-  `#A5C161` inside the logo files themselves. Brand tokens in `src/styles/global.css`: night `#1C1B33`, dusk
-  `#34305A`, violet `#9183A4`, mauve `#C485A2`, pink `#EF8994`, salmon `#F19677`, orange `#C96E44`, blue `#2F6A96`,
+  `#A5C161` inside the logo files themselves. The dark base is a blue-leaning off-black, not purple (page `#0F1217`,
+  night `#12161D`, dusk `#1D2635`); purple tones belong only in the sunset itself. Brand tokens in
+  `src/styles/global.css` also include violet `#9183A4`, mauve `#C485A2`, pink `#EF8994`, salmon `#F19677`, orange `#C96E44`, blue `#2F6A96`,
   sky `#99CEF2` and `#3E8BC1` (logo blues). Fonts: Lato (headings), Rubik (body), self-hosted.
 - **Dark mode is the default**; a header button switches to light mode (remembered in `localStorage`, applied by
   the inline script in `BaseLayout.astro`). Theme colours are role tokens in `global.css` (`--bg`, `--surface`,
@@ -31,7 +32,8 @@ live, common edits, TODOs); keep it accurate when you change how things work.
   components, not raw colours, so both themes keep working.
 - **One logo, used sparingly.** The client's logo is well known: use only the state + bird + PSoAR badge, once, top
   left in the header (`src/components/layout/Brand.astro`): `psoar-logo-dark.svg` (made for dark backgrounds, from
-  the client's seal SVG without the ring of words) in dark mode, `psoar-logo-light.png` in light mode. Don't add
+  the client's seal SVG without the ring of words) in dark mode, and `psoar-logo-light.svg` in light mode (the same
+  drawing with the lettering and wings in the wordmark blue `#2F6A96` and the "o" in wordmark orange `#C96E44`). Don't add
   wordmark-only, seal, cropped or recoloured variants, or repeat the logo elsewhere on pages. The favicon, Apple
   touch icon and `og-image.png` in `public/` were generated from the dark logo.
   The home hero photo (`src/assets/photos/ozarks-sunset.avif`) is shown greyscale and recoloured with the sunset

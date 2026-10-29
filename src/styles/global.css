@@ -9,7 +9,7 @@
 
 :root {
   /* --- Brand colours (same in both themes) ---
-     The Arkansas-sunset spectrum: twilight indigo through violet, pink and
+     The Arkansas-sunset spectrum: blue-black night through violet, pink and
      salmon, plus the logo's blues and orange. No greens: the bright logo green
      (#a5c161) appears only inside the logo itself. */
   --salmon: #f19677; /* main buttons, highlights */
@@ -21,31 +21,31 @@
   --blue: #2f6a96;
   --sky: #99cef2; /* light blue from the logo */
   --sky-deep: #3e8bc1; /* deep blue from the logo */
-  --night: #1c1b33; /* twilight indigo (photo overlays, the sunset gradient) */
-  --dusk: #34305a; /* deep violet dusk */
-  --on-accent: #1c1b33; /* text on salmon buttons */
-  --on-dark: #ecebf3; /* body text on the dark bands (Get involved, footer) */
-  --on-dark-subtle: #bdbbd0;
+  --night: #12161d; /* blue-black (photo overlays, the top of the sunset gradient) */
+  --dusk: #1d2635; /* deep blue dusk */
+  --on-accent: #12161d; /* text on salmon buttons */
+  --on-dark: #e9edf2; /* body text on the dark bands (Get involved, footer) */
+  --on-dark-subtle: #b2bac6;
 
   /* The sunset used in the hero and page headers. */
-  --sunset: linear-gradient(180deg, #1c1b33 0%, #34305a 34%, #9183a4 58%, #c485a2 70%, #ef8994 82%, #f19677 100%);
+  --sunset: linear-gradient(180deg, #12161d 0%, #1d2635 32%, #4a5578 48%, #9183a4 62%, #c485a2 74%, #ef8994 86%, #f19677 100%);
 
   /* --- Dark theme (default) --- */
   color-scheme: dark;
-  --bg: #16152b; /* page background */
-  --surface: #201f3c; /* cards, alternate sections */
-  --surface-2: #29274a; /* cards inside alternate sections */
-  --band: #0f0e20; /* the darkest bands: Get involved, footer */
-  --wash: #2a2142; /* warm tint section, date tiles */
-  --ink: #f4f2fa; /* headings, main text */
-  --text: #cfcce2; /* body text */
-  --text-subtle: #a9a6c2; /* captions, small print */
+  --bg: #0f1217; /* page background */
+  --surface: #171b22; /* cards, alternate sections */
+  --surface-2: #1e232c; /* cards inside alternate sections */
+  --band: #0a0c10; /* the darkest bands: Get involved, footer */
+  --wash: #211b1e; /* warm tint section, date tiles */
+  --ink: #f3f5f8; /* headings, main text */
+  --text: #cdd3dc; /* body text */
+  --text-subtle: #9ea7b4; /* captions, small print */
   --accent-ink: #f6a98d; /* small salmon text (eyebrows, icons) */
   --link: var(--sky);
   --link-hover: #c7e5f9;
   --line: rgba(255, 255, 255, 0.1);
   --line-strong: rgba(255, 255, 255, 0.24);
-  --field-border: #8a87a6; /* 3:1 against the surface, as WCAG requires for inputs */
+  --field-border: #6f7a8a; /* 3:1 against the surface, as WCAG requires for inputs */
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
 
   /* --- Typography --- */
@@ -69,18 +69,18 @@
   --bg: #fbf8f4;
   --surface: #ffffff;
   --surface-2: #f5f1ec;
-  --band: #1c1b33;
+  --band: #12161d;
   --wash: #fdeee8;
-  --ink: #1c1b33;
-  --text: #3d3f52;
-  --text-subtle: #5e6075;
+  --ink: #12161d;
+  --text: #3a414d;
+  --text-subtle: #5b6472;
   --accent-ink: #a8472b;
   --link: var(--blue); /* 5.4:1 on the light background */
   --link-hover: #234f71;
-  --line: rgba(28, 27, 51, 0.12);
-  --line-strong: rgba(28, 27, 51, 0.22);
-  --field-border: #7f8193;
-  --shadow: 0 1px 2px rgba(28, 27, 51, 0.06), 0 8px 24px -12px rgba(28, 27, 51, 0.18);
+  --line: rgba(15, 18, 23, 0.12);
+  --line-strong: rgba(15, 18, 23, 0.22);
+  --field-border: #7d8594;
+  --shadow: 0 1px 2px rgba(15, 18, 23, 0.06), 0 8px 24px -12px rgba(15, 18, 23, 0.18);
   --focus: var(--blue);
 }
 

@@ -3,16 +3,15 @@
  * Brand — the PSoAR logo (Arkansas outline, bird and PSoAR lettering) with the
  * organization's name beside it. Used once, top left in the header.
  *
- * The logo is well known, so the site uses only this one form of it: the
- * version drawn for dark backgrounds in dark mode, and the original
- * light-background version in light mode. No wordmark-only, seal or cropped
- * variants. Files: src/assets/brand/.
+ * The logo is well known, so the site uses only this one form of it, in its
+ * two colourways: psoar-logo-dark.svg (pale blue lettering) in dark mode and
+ * psoar-logo-light.svg (wordmark blue and orange) in light mode. No
+ * wordmark-only, seal or cropped variants. Files: src/assets/brand/.
  *
  * The images are decorative (alt=""): the link around them carries the name.
  */
-import { Image } from 'astro:assets';
 import logoDark from '../../assets/brand/psoar-logo-dark.svg';
-import logoLight from '../../assets/brand/psoar-logo-light.png';
+import logoLight from '../../assets/brand/psoar-logo-light.svg';
 
 const height = 64;
 ---
@@ -25,7 +24,13 @@ const height = 64;
     width={Math.round((height * logoDark.width) / logoDark.height)}
     class="logo logo--dark"
   />
-  <Image src={logoLight} alt="" height={height} densities={[1, 2, 3]} class="logo logo--light" loading="eager" />
+  <img
+    src={logoLight.src}
+    alt=""
+    height={height}
+    width={Math.round((height * logoLight.width) / logoLight.height)}
+    class="logo logo--light"
+  />
   <span class="name">
     <span>Psychedelic Society</span>
     <span>of Arkansas</span>
