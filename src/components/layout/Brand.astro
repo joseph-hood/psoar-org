@@ -1,0 +1,63 @@
+---
+/**
+ * Brand — the PSoAR logo (Arkansas outline, bird and PSoAR lettering) with the
+ * organization's name beside it. Used once, top left in the header.
+ *
+ * The logo is well known, so the site uses only this one form of it, in its
+ * two colourways: psoar-logo-dark.svg (pale blue lettering) in dark mode and
+ * psoar-logo-light.svg (wordmark blue and orange) in light mode. No
+ * wordmark-only, seal or cropped variants. Files: src/assets/brand/.
+ *
+ * The images are decorative (alt=""): the link around them carries the name.
+ */
+import Logo from '../ui/Logo.astro';
+---
+
+<span class="brand">
+  <Logo height={64} class="brand-logo" />
+  <span class="name">
+    <span>Psychedelic Society</span>
+    <span>of Arkansas</span>
+  </span>
+</span>
+
+<style>
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand :global(.brand-logo) {
+    height: 50px;
+  }
+  @media (min-width: 900px) {
+    .brand :global(.brand-logo) {
+      height: 64px;
+    }
+  }
+  .name {
+    display: none;
+    flex-direction: column;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+  @media (min-width: 1040px) {
+    .name {
+      display: flex;
+    }
+  }
+  @media (max-width: 400px) {
+    .brand :global(.brand-logo) {
+      height: 44px;
+    }
+  }
+  @media (min-width: 1040px) {
+    .name {
+      font-size: 15px;
+    }
+  }
+</style>

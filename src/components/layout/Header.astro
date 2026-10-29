@@ -1,0 +1,229 @@
+---
+/**
+ * Header — sticky site header.
+ *  - Wide screens (900px and up): logo on the left, links + Subscribe on the right.
+ *  - Narrow screens: Subscribe button plus a "Menu" button that opens a link list.
+ *
+ * The menu button is wired up by the small <script> at the bottom.
+ * Without JavaScript the link list simply stays open, so nobody is locked out.
+ */
+import Menu from '@lucide/astro/icons/menu';
+import X from '@lucide/astro/icons/x';
+import { mainNav } from '../../data/nav';
+import { SITE } from '../../config/site';
+import Brand from './Brand.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import Button from '../ui/Button.astro';
+
+// Which page are we on? Used to mark the matching link as "current".
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="site-header" data-site-header>
+  <div class="bar container">
+    <a class="brand-link" href="/" aria-label="Psychedelic Society of Arkansas, home">
+      <Brand />
+    </a>
+
+    <!-- Wide screens -->
+    <nav class="nav-wide" aria-label="Main">
+      <ul role="list">
+        {
+          mainNav.map((link) => (
+            <li>
+              <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ThemeToggle />
+      <Button href={SITE.newsletterUrl} size="sm" external>Subscribe</Button>
+    </nav>
+
+    <!-- Narrow screens -->
+    <div class="nav-narrow">
+      <ThemeToggle />
+      <Button href={SITE.newsletterUrl} size="sm" external>Subscribe</Button>
+      <button
+        type="button"
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="sr-only">Menu</span>
+        <Menu class="icon-open" size={22} />
+        <X class="icon-close" size={22} />
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" class="mobile-menu" aria-label="Main" data-mobile-menu>
+    <ul role="list" class="container">
+      {
+        mainNav.map((link) => (
+          <li>
+            <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  const toggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = header?.querySelector<HTMLElement>('[data-mobile-menu]');
+
+  if (header && toggle && menu) {
+    const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.toggleAttribute('data-open', open);
+    };
+
+    toggle.addEventListener('click', () => setOpen(!isOpen()));
+
+    // Escape closes the menu and returns focus to the button.
+    header.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // Choosing a link closes the menu.
+    menu.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a')) setOpen(false);
+    });
+
+    // Growing the window to desktop size resets the menu.
+    window.matchMedia('(min-width: 900px)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-block: 12px;
+  }
+
+  .brand-link {
+    display: inline-flex;
+    text-decoration: none;
+    border-radius: var(--radius);
+  }
+
+  /* --- Wide navigation ------------------------------------------------ */
+  .nav-wide {
+    display: none;
+    align-items: center;
+    gap: 20px;
+  }
+  .nav-wide ul {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-right: 8px;
+  }
+  .nav-wide a:not(.btn),
+  .mobile-menu a {
+    color: var(--ink);
+    font-weight: 500;
+    font-size: 16px;
+    text-decoration: none;
+    text-underline-offset: 8px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--accent);
+  }
+  /* Hovered link, and the link for the page you are on (salmon underline) */
+  .nav-wide a:not(.btn):hover,
+  .mobile-menu a:hover,
+  .nav-wide a[aria-current='page'],
+  .mobile-menu a[aria-current='page'] {
+    text-decoration-line: underline;
+  }
+
+  /* --- Narrow navigation ---------------------------------------------- */
+  .nav-narrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .menu-toggle:hover {
+    background: rgba(15, 18, 23, 0.05);
+  }
+  .icon-close,
+  .menu-toggle[aria-expanded='true'] .icon-open {
+    display: none;
+  }
+  .menu-toggle[aria-expanded='true'] .icon-close {
+    display: block;
+  }
+  /* The button does nothing without JavaScript, so hide it then. */
+  :global(html:not(.js)) .menu-toggle {
+    display: none;
+  }
+
+  .mobile-menu {
+    border-top: 1px solid var(--line);
+  }
+  .mobile-menu a {
+    display: block;
+    padding: 14px 0;
+    font-size: 18px;
+    border-bottom: 1px solid var(--line);
+    text-underline-offset: 6px;
+  }
+  .mobile-menu li:last-child a {
+    border-bottom: 0;
+  }
+  /* With JavaScript, keep the list closed until the button is pressed. */
+  :global(html.js) .mobile-menu:not([data-open]) {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .nav-wide {
+      display: flex;
+    }
+    .nav-narrow,
+    .mobile-menu {
+      display: none !important;
+    }
+  }
+</style>

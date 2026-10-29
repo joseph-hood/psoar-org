@@ -1,0 +1,93 @@
+---
+/**
+ * Events page. Address: /events
+ * Every upcoming event from the PSoAR Google Calendar for the next few months
+ * (SITE.calendar.monthsAhead), grouped by month. To add or change an event, edit
+ * it in Google Calendar; the site picks it up at the next daily update.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import Section from '../../components/ui/Section.astro';
+import EventList from '../../components/events/EventList.astro';
+import SubscribeLinks from '../../components/events/SubscribeLinks.astro';
+import { getEvents } from '../../lib/events';
+import { CALENDAR_LINKS } from '../../config/site';
+
+const events = getEvents();
+---
+
+<BaseLayout
+  title="Events"
+  description="Upcoming education nights, community gatherings, and events from the Psychedelic Society of Arkansas."
+>
+  <PageHeader eyebrow="Events" title="Gather with us">
+    <p>Education nights, community gatherings, and events around Arkansas. Everyone is welcome.</p>
+  </PageHeader>
+
+  <Section padTop={false} label="Upcoming events">
+    <div class="layout">
+      <div class="list">
+        <EventList events={events} grouped />
+      </div>
+      <aside class="side" aria-label="Follow the calendar">
+        <div class="panel">
+          <h2>Follow the calendar</h2>
+          <p>Subscribe once and new PSoAR events appear in your own calendar automatically.</p>
+          <SubscribeLinks />
+          <p class="small">
+            Times are Central (Arkansas) time. Prefer Google’s view?
+            <a href={CALENDAR_LINKS.web} target="_blank" rel="noopener"
+              >Open the calendar<span class="sr-only"> (opens in a new tab)</span></a
+            >.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: grid;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 48px;
+    }
+    .side {
+      position: sticky;
+      top: 108px;
+    }
+  }
+  .panel {
+    display: grid;
+    gap: 14px;
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+  .panel h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+  }
+  .panel p {
+    color: var(--text);
+    font-size: 15.5px;
+  }
+  .panel :global(.label) {
+    display: none;
+  }
+  .panel :global(.links) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .small {
+    font-size: 14px !important;
+  }
+</style>

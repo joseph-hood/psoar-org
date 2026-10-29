@@ -1,0 +1,119 @@
+---
+/**
+ * ArticleCards — reading-list entries as cards (home page "Featured reading").
+ * The list lives in src/data/articles.ts.
+ */
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import type { Article } from '../../data/articles';
+
+interface Props {
+  articles: Article[];
+}
+const { articles } = Astro.props;
+---
+
+<ul class="cards" role="list">
+  {
+    articles.map((article) => (
+      <li class="card">
+        <p class="topic">{article.topic}</p>
+        <h3 class="title">
+          <a href={article.url} target="_blank" rel="noopener">
+            {article.title}
+            <span class="sr-only"> (opens in a new tab)</span>
+          </a>
+        </h3>
+        <p class="summary">{article.summary}</p>
+        <p class="source">
+          {article.source} <ArrowUpRight size={15} aria-hidden="true" />
+        </p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .cards {
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 800px) {
+    .cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 2px rgba(15, 18, 23, 0.06),
+      0 16px 32px -16px rgba(15, 18, 23, 0.28);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: linear-gradient(90deg, var(--purple), var(--orange));
+  }
+  .topic {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+  }
+  .title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 1.25;
+  }
+  .title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  /* The whole card is clickable. */
+  .title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+  .title a:focus-visible {
+    outline: none;
+  }
+  .title a:focus-visible::after {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+  }
+  .summary {
+    font-size: 15.5px;
+    color: var(--text);
+    flex: 1;
+  }
+  .source {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-subtle);
+  }
+</style>

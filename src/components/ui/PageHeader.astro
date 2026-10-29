@@ -1,0 +1,59 @@
+---
+/**
+ * PageHeader — the sunset band at the top of every page except Home.
+ *
+ *   <PageHeader eyebrow="Events" title="What's happening">
+ *     <p>Optional intro paragraph.</p>
+ *   </PageHeader>
+ */
+import Ridges from './Ridges.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+}
+const { eyebrow, title } = Astro.props;
+---
+
+<header class="page-header on-dark">
+  <div class="container inner">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {
+      Astro.slots.has('default') && (
+        <div class="lede">
+          <slot />
+        </div>
+      )
+    }
+  </div>
+  <Ridges />
+</header>
+
+<style>
+  .page-header {
+    position: relative;
+    overflow: hidden;
+    background: var(--sunset);
+    padding-top: clamp(48px, 7vw, 88px);
+    padding-bottom: clamp(88px, 12vw, 168px);
+  }
+  .inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 14px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(38px, 5.4vw, 64px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    color: #fff;
+    max-width: 18ch;
+  }
+  .lede :global(p + p) {
+    margin-top: 0.8em;
+  }
+</style>

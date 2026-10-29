@@ -1,0 +1,39 @@
+---
+/**
+ * Logo — the PSoAR logo (Arkansas outline, bird and PSoAR lettering), in its
+ * dark-background colours in dark mode and light-background colours in light
+ * mode. Used in the header and beside the bluebird story on About; keep it to
+ * those (see CLAUDE.md: the logo is used sparingly).
+ *
+ *   <Logo height={64} />                  decorative (default)
+ *   <Logo height={240} alt="The PSoAR logo…" />
+ */
+import logoDark from '../../assets/brand/psoar-logo-dark.svg';
+import logoLight from '../../assets/brand/psoar-logo-light.svg';
+
+interface Props {
+  height: number;
+  alt?: string;
+  class?: string;
+}
+const { height, alt = '', class: className } = Astro.props;
+const width = Math.round((height * logoDark.width) / logoDark.height);
+---
+
+<img src={logoDark.src} {alt} {width} {height} class:list={['logo', 'logo--dark', className]} />
+<img src={logoLight.src} {alt} {width} {height} class:list={['logo', 'logo--light', className]} />
+
+<style>
+  .logo {
+    width: auto;
+  }
+  .logo--light {
+    display: none;
+  }
+  :global(:root[data-theme='light']) .logo--dark {
+    display: none;
+  }
+  :global(:root[data-theme='light']) .logo--light {
+    display: block;
+  }
+</style>

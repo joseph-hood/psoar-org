@@ -1,0 +1,31 @@
+{
+  "name": "psoar-site",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "feeds": "node scripts/fetch-feeds.mjs",
+    "predev": "node scripts/fetch-feeds.mjs",
+    "dev": "astro dev",
+    "prebuild": "node scripts/fetch-feeds.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --test scripts/*.test.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/rubik": "^5.3.0",
+    "@fontsource/lato": "^5.3.0",
+    "@lucide/astro": "^1.64.0",
+    "astro": "^7.4.4",
+    "fast-xml-parser": "^5.11.2",
+    "ical.js": "^2.2.1",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "typescript": "^6.0.3"
+  }
+}

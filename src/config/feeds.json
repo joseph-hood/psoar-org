@@ -1,0 +1,12 @@
+{
+  "calendar": {
+    "id": "c_3001d5d4eb64b1fde1d359f220017e6bb9bd5d4dcd2584be3974e1aa5169087a@group.calendar.google.com",
+    "timeZone": "America/Chicago",
+    "monthsAhead": 6,
+    "maxEvents": 60
+  },
+  "newsletter": {
+    "url": "https://psoar.substack.com",
+    "maxPosts": 6
+  }
+}

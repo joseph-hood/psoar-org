@@ -1,0 +1,75 @@
+---
+/**
+ * SectionHeading — eyebrow + heading + optional intro, with an optional link on
+ * the right (e.g. "All events →").
+ *
+ *   <SectionHeading id="events-heading" eyebrow="Calendar" title="Upcoming events"
+ *                   link={{ href: '/events', label: 'All events' }}>
+ *     <p>Optional intro.</p>
+ *   </SectionHeading>
+ */
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+
+interface Props {
+  id: string;
+  eyebrow?: string;
+  title: string;
+  link?: { href: string; label: string; external?: boolean };
+}
+const { id, eyebrow, title, link } = Astro.props;
+---
+
+<div class="heading">
+  <div class="text">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h2 id={id} class="h2">{title}</h2>
+    {
+      Astro.slots.has('default') && (
+        <div class="lede">
+          <slot />
+        </div>
+      )
+    }
+  </div>
+  {
+    link && (
+      <a
+        class="more"
+        href={link.href}
+        {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
+      >
+        {link.label} <ArrowRight size={18} aria-hidden="true" />
+        {link.external && <span class="sr-only"> (opens in a new tab)</span>}
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px 32px;
+    margin-bottom: clamp(24px, 3vw, 36px);
+  }
+  .text {
+    display: grid;
+    gap: 12px;
+  }
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .more:hover {
+    text-decoration: underline;
+  }
+  :global(.on-dark) .more {
+    color: var(--accent);
+  }
+</style>

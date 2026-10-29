@@ -1,0 +1,252 @@
+---
+/**
+ * Contact page. Address: /contact
+ *
+ * The form sends to a Google Form (responses land in its linked Google Sheet).
+ * Its address and question ids are in SITE.contactForm (src/config/site.ts);
+ * README.md → "Contact form" explains how to fill them in. Until they're filled
+ * in, the form is disabled and points people to the email address instead.
+ */
+import Mail from '@lucide/astro/icons/mail';
+import Send from '@lucide/astro/icons/send';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import Section from '../components/ui/Section.astro';
+import Button from '../components/ui/Button.astro';
+import { SITE } from '../config/site';
+
+const { action, fields } = SITE.contactForm;
+const configured = Boolean(action && Object.values(fields).every(Boolean));
+---
+
+<BaseLayout title="Contact" description="Get in touch with the Psychedelic Society of Arkansas.">
+  <PageHeader eyebrow="Contact" title="Get in touch">
+    <p>We’d love to hear from you. Whether you have questions, feedback, or just want to chat, feel free to reach out.</p>
+  </PageHeader>
+
+  <Section padTop={false} label="Contact form">
+    <div class="layout">
+      <form
+        class="form"
+        id="contact-form"
+        novalidate
+        data-action={action}
+        data-fields={JSON.stringify(fields)}
+        data-configured={configured ? 'true' : 'false'}
+      >
+        <div class="row">
+          <label class="field">
+            <span>Name <span class="req" aria-hidden="true">*</span></span>
+            <input name="name" type="text" autocomplete="name" required />
+          </label>
+          <label class="field">
+            <span>Email <span class="req" aria-hidden="true">*</span></span>
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+        </div>
+        <label class="field">
+          <span>Subject</span>
+          <input name="subject" type="text" />
+        </label>
+        <label class="field">
+          <span>Message <span class="req" aria-hidden="true">*</span></span>
+          <textarea name="message" rows="6" required></textarea>
+        </label>
+        <!-- Spam trap: hidden from people, but bots fill it in. -->
+        <label class="trap" aria-hidden="true">
+          Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off" />
+        </label>
+        <div class="submit">
+          <Button type="submit" variant="dark" disabled={!configured}>
+            <Send size={18} aria-hidden="true" /> Send message
+          </Button>
+          <p class="status" role="status" aria-live="polite" data-status>
+            {
+              !configured &&
+                `The contact form isn’t connected yet. Please email ${SITE.email} instead.`
+            }
+          </p>
+        </div>
+        <p class="note"><span aria-hidden="true">*</span> Required. Messages are sent through Google Forms.</p>
+      </form>
+
+      <aside class="side">
+        <div class="panel">
+          <Mail size={24} aria-hidden="true" />
+          <h2>Email us</h2>
+          <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        </div>
+        <div class="panel">
+          <h2>Follow along</h2>
+          <p>
+            <a href={SITE.newsletterUrl} target="_blank" rel="noopener"
+              >Newsletter on Substack<span class="sr-only"> (opens in a new tab)</span></a
+            ><br />
+            <a href={SITE.facebookUrl} target="_blank" rel="noopener"
+              >Facebook<span class="sr-only"> (opens in a new tab)</span></a
+            >
+          </p>
+        </div>
+      </aside>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+  if (form && form.dataset.configured === 'true') {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const action = form.dataset.action!;
+    const fields = JSON.parse(form.dataset.fields!) as Record<string, string>;
+    const say = (message: string, kind = '') => {
+      status.textContent = message;
+      status.dataset.kind = kind;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+
+      // Bots fill the hidden field; pretend it worked and drop it.
+      if (data.get('website')) {
+        form.reset();
+        say('Thanks! Your message has been sent.', 'ok');
+        return;
+      }
+
+      const body = new URLSearchParams();
+      for (const [name, entry] of Object.entries(fields)) body.append(entry, String(data.get(name) ?? '').trim());
+
+      button.disabled = true;
+      say('Sending…');
+      try {
+        // Google Forms doesn't send CORS headers, so the response can't be read;
+        // a network failure is the only error we can detect.
+        await fetch(action, { method: 'POST', mode: 'no-cors', body });
+        form.reset();
+        say('Thanks! Your message has been sent. We’ll be in touch soon.', 'ok');
+      } catch {
+        say('Sorry, something went wrong. Please try again, or email us instead.', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .layout {
+    display: grid;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (min-width: 960px) {
+    .layout {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 48px;
+    }
+  }
+  .form {
+    display: grid;
+    gap: 18px;
+    padding: clamp(20px, 3vw, 32px);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+  .row {
+    display: grid;
+    gap: 18px;
+  }
+  @media (min-width: 640px) {
+    .row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .field {
+    display: grid;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 15.5px;
+  }
+  .req {
+    color: var(--accent-ink);
+  }
+  input,
+  textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--field-border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    font-weight: 400;
+  }
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 1px;
+  }
+  input:disabled,
+  textarea:disabled {
+    background: var(--surface-2);
+  }
+  textarea {
+    resize: vertical;
+  }
+  .trap {
+    position: absolute;
+    left: -9999px;
+  }
+  .submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+  }
+  .submit :global(button:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .status {
+    font-size: 15px;
+    color: var(--text);
+  }
+  .status[data-kind='ok'] {
+    color: var(--link);
+    font-weight: 500;
+  }
+  .status[data-kind='error'] {
+    color: #a3302a;
+    font-weight: 500;
+  }
+  .note {
+    font-size: 13.5px;
+    color: var(--text-subtle);
+  }
+
+  .side {
+    display: grid;
+    gap: 16px;
+  }
+  .panel {
+    display: grid;
+    gap: 8px;
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+  .panel :global(svg) {
+    color: var(--accent-ink);
+  }
+  .panel h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+  }
+</style>

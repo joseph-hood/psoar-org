@@ -1,0 +1,39 @@
+---
+/**
+ * Ridges — layered Ozark ridgelines, drawn along the bottom edge of the hero and
+ * page headers. Purely decorative.
+ *
+ * fill: colour of the front ridge; set it to the background of the section
+ *       that follows so the two blend.
+ */
+interface Props {
+  fill?: string;
+  class?: string;
+}
+const { fill = 'var(--bg)', class: className } = Astro.props;
+---
+
+<svg class:list={['ridges', className]} viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <path
+    d="M0 92 C120 70 200 88 300 66 C400 44 470 78 580 60 C690 42 760 70 860 52 C960 34 1040 66 1150 50 C1260 34 1350 58 1440 44 V160 H0 Z"
+    fill="#18263a"
+    opacity="0.55"></path>
+  <path
+    d="M0 118 C140 96 230 116 360 98 C490 80 560 110 700 96 C840 82 920 108 1060 94 C1200 80 1320 102 1440 88 V160 H0 Z"
+    fill="#191919"
+    opacity="0.85"></path>
+  <path d="M0 148 C180 132 330 146 520 138 C710 130 860 146 1040 140 C1220 134 1340 142 1440 136 V160 H0 Z" fill={fill}
+  ></path>
+</svg>
+
+<style>
+  .ridges {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    width: 100%;
+    height: clamp(56px, 9vw, 140px);
+    pointer-events: none;
+  }
+</style>

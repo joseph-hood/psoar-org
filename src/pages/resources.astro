@@ -1,0 +1,207 @@
+---
+/**
+ * Resources page. Address: /resources
+ * All links and videos are listed in src/data/resources.ts. Edit them there.
+ */
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import LifeBuoy from '@lucide/astro/icons/life-buoy';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import Section from '../components/ui/Section.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { resourceGroups, videos } from '../data/resources';
+
+/** Pulls the video id out of any YouTube address. */
+function youtubeId(url: string): string {
+  const u = new URL(url);
+  return u.hostname === 'youtu.be' ? u.pathname.slice(1) : (u.searchParams.get('v') ?? u.pathname.split('/').pop()!);
+}
+---
+
+<BaseLayout
+  title="Resources"
+  description="Documentaries, research centers, peer support, books, advocacy groups, and trainings on psychedelics and plant medicine."
+>
+  <PageHeader eyebrow="Resources" title="Learn, stay safe, go deeper">
+    <p>Trusted organizations, books, films, and trainings, gathered by our community.</p>
+  </PageHeader>
+
+  <Section padTop={false} label="Resource categories">
+    <nav class="jump" aria-label="On this page">
+      <a href="#videos">Documentaries</a>
+      {resourceGroups.map((g) => <a href={`#${g.id}`}>{g.title}</a>)}
+    </nav>
+
+    <div class="crisis">
+      <LifeBuoy size={22} aria-hidden="true" />
+      <p>
+        <strong>Need to talk to someone now?</strong> The free <a href="https://firesideproject.org/" target="_blank"
+          rel="noopener">Fireside Project<span class="sr-only"> (opens in a new tab)</span></a
+        > peer support line is available by call or text at <a href="tel:+16234737433">62-FIRESIDE (623-473-7433)</a>.
+        In a mental health crisis, call or text <a href="tel:988">988</a>. In an emergency, call 911.
+      </p>
+    </div>
+  </Section>
+
+  <Section tone="alt" id="videos" labelledby="videos-heading">
+    <SectionHeading id="videos-heading" eyebrow="Watch" title="Documentaries" />
+    <ul class="videos" role="list">
+      {
+        videos.map((video) => {
+          const id = youtubeId(video.url);
+          return (
+            <li class="video">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${id}`}
+                title={video.title ?? 'Documentary video on YouTube'}
+                loading="lazy"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              />
+              <a class="video-link" href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener">
+                {video.title ?? 'Watch on YouTube'}
+                <ArrowUpRight size={14} aria-hidden="true" />
+                <span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </Section>
+
+  {
+    resourceGroups.map((group, i) => (
+      <Section id={group.id} labelledby={`${group.id}-heading`} tone={i % 2 ? 'alt' : 'default'}>
+        <SectionHeading id={`${group.id}-heading`} title={group.title}>
+          {group.intro && <p>{group.intro}</p>}
+        </SectionHeading>
+        <ul class="links" role="list">
+          {group.links.map((link) => (
+            <li class="link">
+              <a href={link.url} target="_blank" rel="noopener">
+                <span class="link-title">
+                  {link.title}
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </span>
+                {link.note && <span class="link-note">{link.note}</span>}
+                <span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    ))
+  }
+</BaseLayout>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .jump a {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    background: var(--surface);
+  }
+  .jump a:hover {
+    border-color: var(--ink);
+  }
+
+  .crisis {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-top: 24px;
+    padding: 18px 20px;
+    border-radius: var(--radius-lg);
+    background: var(--wash);
+    border: 1px solid rgba(241, 150, 119, 0.45);
+    color: var(--text);
+    font-size: 15.5px;
+  }
+  .crisis :global(svg) {
+    flex: none;
+    color: var(--accent-ink);
+    margin-top: 2px;
+  }
+
+  .videos {
+    display: grid;
+    gap: 24px;
+  }
+  @media (min-width: 760px) {
+    .videos {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .video {
+    display: grid;
+    gap: 10px;
+  }
+  .video iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--off-black);
+  }
+  .video-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .links {
+    display: grid;
+    gap: 12px;
+  }
+  @media (min-width: 760px) {
+    .links {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .link a {
+    display: grid;
+    gap: 4px;
+    height: 100%;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--surface);
+    text-decoration: none;
+    transition: border-color 0.15s;
+  }
+  :global(.section--alt) .link a {
+    background: var(--surface-2);
+  }
+  .link a:hover {
+    border-color: var(--accent);
+  }
+  .link-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .link-title :global(svg) {
+    flex: none;
+    color: var(--accent-ink);
+    margin-top: 4px;
+  }
+  .link-note {
+    font-size: 14.5px;
+    color: var(--text-subtle);
+  }
+</style>

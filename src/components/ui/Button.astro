@@ -1,0 +1,128 @@
+---
+/**
+ * Button — renders a link (<a>) when you give it an `href`, otherwise a <button>.
+ *
+ *   <Button href="/events">See upcoming events</Button>
+ *   <Button variant="outline" href="/reading">Reading list</Button>
+ *   <Button variant="light" href="…">On dark backgrounds</Button>
+ *
+ * variant: primary (salmon), outline, light (white outline, for photo/dark bands), dark (solid, text colour)
+ * size:    md (default) or sm (used in the header)
+ * external: opens in a new tab and says so to screen readers
+ */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'outline' | 'light' | 'dark';
+  size?: 'sm' | 'md';
+  block?: boolean;
+  external?: boolean;
+  class?: string;
+  [attr: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  block = false,
+  external = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+const attrs = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener' } : {}) }
+  : { type: 'button' as const };
+---
+
+<Tag class:list={['btn', `btn--${variant}`, `btn--${size}`, { 'btn--block': block }, className]} {...attrs} {...rest}>
+  <slot />
+  {external && <span class="sr-only"> (opens in a new tab)</span>}
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s,
+      color 0.15s,
+      transform 0.15s;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  .btn :global(svg) {
+    flex: none;
+  }
+
+  .btn--md {
+    padding: 12.5px 24px;
+  }
+  .btn--sm {
+    padding: 8.5px 18px;
+    font-size: 15px;
+  }
+  .btn--block {
+    display: flex;
+    width: 100%;
+  }
+
+  .btn--primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+  .btn--primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: var(--on-accent);
+  }
+
+  .btn--outline {
+    background: transparent;
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+  .btn--outline:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .btn--light {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #fff;
+  }
+  .btn--light:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  /* Solid, in the main text colour (light in dark mode, dark in light mode) */
+  .btn--dark {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+  .btn--dark:hover {
+    background: color-mix(in srgb, var(--ink) 85%, var(--bg));
+    border-color: color-mix(in srgb, var(--ink) 85%, var(--bg));
+    color: var(--bg);
+  }
+</style>

@@ -1,0 +1,263 @@
+---
+/**
+ * EventCard — one calendar event: date tile, title, time, place, and links.
+ *
+ * compact: short summary (home page). Without it the full description is shown
+ *          behind a "Details" toggle (events page).
+ *
+ * `data-ends` lets the small script in EventList hide events that finish after
+ * the site was last built, so a past event never lingers until the next update.
+ */
+import CalendarPlus from '@lucide/astro/icons/calendar-plus';
+import Clock from '@lucide/astro/icons/clock';
+import MapPin from '@lucide/astro/icons/map-pin';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import ChevronDown from '@lucide/astro/icons/chevron-down';
+import {
+  type CalendarEvent,
+  endsAt,
+  googleAddLink,
+  icsPath,
+  mapLink,
+  startParts,
+  summary,
+  whenText,
+} from '../../lib/events';
+import { textToHtml } from '../../lib/text';
+
+interface Props {
+  event: CalendarEvent;
+  compact?: boolean;
+}
+const { event, compact = false } = Astro.props;
+const d = startParts(event);
+const map = mapLink(event);
+const isLink = /^https?:\/\//.test(event.location);
+const blurb = summary(event);
+---
+
+<article class:list={['event', { compact }]} data-ends={endsAt(event)}>
+  <div class="date" aria-hidden="true">
+    <span class="month">{d.month}</span>
+    <span class="day">{d.day}</span>
+    <span class="weekday">{d.weekday}</span>
+  </div>
+
+  <div class="body">
+    <h3 class="title">{event.title}</h3>
+    <p class="sr-only">{d.full}</p>
+    <ul class="meta" role="list">
+      <li><Clock size={16} aria-hidden="true" /> {whenText(event)}</li>
+      {
+        event.location && (
+          <li>
+            <MapPin size={16} aria-hidden="true" />
+            {map ? (
+              <a href={map} target="_blank" rel="noopener">
+                {event.location}
+                <span class="sr-only"> (map, opens in a new tab)</span>
+              </a>
+            ) : isLink ? (
+              <a href={event.location} target="_blank" rel="noopener">
+                Online
+              </a>
+            ) : (
+              event.location
+            )}
+          </li>
+        )
+      }
+    </ul>
+
+    {compact && blurb && <p class="summary">{blurb}</p>}
+
+    {
+      !compact && event.description && (
+        <details class="details">
+          <summary>
+            Details <ChevronDown size={16} aria-hidden="true" />
+          </summary>
+          <div class="description" set:html={textToHtml(event.description)} />
+        </details>
+      )
+    }
+
+    <div class="actions">
+      {
+        event.url && (
+          <a class="action action--main" href={event.url} target="_blank" rel="noopener">
+            More info / RSVP <ArrowUpRight size={16} aria-hidden="true" />
+            <span class="sr-only"> for {event.title} (opens in a new tab)</span>
+          </a>
+        )
+      }
+      <a class="action" href={googleAddLink(event)} target="_blank" rel="noopener">
+        <CalendarPlus size={16} aria-hidden="true" /> Google Calendar
+        <span class="sr-only"> – add {event.title} (opens in a new tab)</span>
+      </a>
+      <a class="action" href={icsPath(event)} download>
+        <CalendarPlus size={16} aria-hidden="true" /> Apple / Outlook
+        <span class="sr-only"> – download {event.title} as a calendar file</span>
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .event {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 18px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  @media (min-width: 640px) {
+    .event {
+      gap: 24px;
+      padding: 24px;
+    }
+  }
+
+  .date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 76px;
+    border-radius: 14px;
+    background: var(--wash);
+    border: 1px solid rgba(241, 150, 119, 0.35);
+    line-height: 1;
+    text-align: center;
+  }
+  .month {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+  }
+  .day {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--ink);
+    margin: 3px 0 2px;
+  }
+  .weekday {
+    font-size: 12px;
+    color: var(--text-subtle);
+  }
+
+  .body {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(19px, 1.7vw, 22px);
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .meta {
+    display: grid;
+    gap: 4px;
+    font-size: 15.5px;
+    color: var(--text);
+  }
+  .meta li {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .meta :global(svg) {
+    flex: none;
+    position: relative;
+    top: 2px;
+    color: var(--accent-ink);
+  }
+  .meta a {
+    color: inherit;
+    text-decoration-color: var(--line-strong);
+  }
+  .meta a:hover {
+    color: var(--link);
+  }
+  .summary {
+    font-size: 15.5px;
+    color: var(--text);
+  }
+
+  .details summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--link);
+    list-style: none;
+  }
+  .details summary::-webkit-details-marker {
+    display: none;
+  }
+  .details[open] summary :global(svg) {
+    transform: rotate(180deg);
+  }
+  .description {
+    margin-top: 10px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    font-size: 15.5px;
+    color: var(--text);
+    display: grid;
+    gap: 10px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .action:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .action--main {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+  .action--main:hover {
+    background: color-mix(in srgb, var(--ink) 85%, var(--bg));
+    color: var(--bg);
+  }
+  .compact .action:not(.action--main) {
+    display: none;
+  }
+  @media (min-width: 640px) {
+    .compact .action:not(.action--main) {
+      display: inline-flex;
+    }
+  }
+</style>

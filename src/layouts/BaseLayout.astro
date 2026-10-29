@@ -1,0 +1,94 @@
+---
+/**
+ * BaseLayout — wraps every page: <head> tags, skip link, header, footer.
+ *
+ *   <BaseLayout title="About" description="Who we are.">
+ *     ...page content...
+ *   </BaseLayout>
+ */
+// Fonts are self-hosted (installed from npm), so visitors' browsers never
+// contact Google. Lato = headings (the brand font), Rubik = body text.
+import '@fontsource/lato/400.css';
+import '@fontsource/lato/700.css';
+import '@fontsource/lato/900.css';
+import '@fontsource-variable/rubik/wght.css';
+import '../styles/global.css';
+
+import { SITE } from '../config/site';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+
+interface Props {
+  /** Page name. Leave out on the home page. */
+  title?: string;
+  description?: string;
+  /** Ask search engines not to list this page (always on while SITE.noindex is true). */
+  noindex?: boolean;
+}
+
+const { title, description = SITE.description } = Astro.props;
+const noindex = SITE.noindex || Astro.props.noindex;
+
+const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} (PSoAR) | Find the others`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--
+      Asks search engines not to list the page. Controlled by `noindex` in
+      src/config/site.ts (whole site) or the `noindex` prop (one page, e.g. 404).
+    -->
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {!noindex && <link rel="canonical" href={canonical} />}
+    <meta name="theme-color" content="#191919" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og-image.png', Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The PSoAR logo: a bird with outstretched wings over the outline of Arkansas" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!--
+      Lets our CSS know JavaScript is available (used by the mobile menu), and
+      applies light mode before the page paints if the visitor chose it.
+      Dark mode is the default.
+    -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      try {
+        if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  /* The skip link focuses <main>; no ring needed around the whole page. */
+  main:focus {
+    outline: none;
+  }
+</style>

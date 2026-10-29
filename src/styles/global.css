@@ -1,0 +1,250 @@
+/* ==========================================================================
+   Psychedelic Society of Arkansas — global styles
+   Dark mode is the default. A visitor can switch to light mode with the
+   sun/moon button in the header (remembered in their browser).
+   Colours are set once per theme below; components only use the role names
+   (--bg, --surface, --ink, --text, --link …), so both themes stay in step.
+   Component-specific styles live inside each component file.
+   ========================================================================== */
+
+:root {
+  /* --- PSoAR palette (the official brand colours; same in both themes) ---
+     Off-black is the base dark colour. Dark blue is used sparingly (the top of
+     the sunset, the "Get involved" band). Green is the logo green: it lives in
+     the logo and chapter seals, not in page styling. */
+  --off-black: #191919;
+  --navy: #18263a; /* dark blue: use sparingly */
+  --blue: #3c8bc2;
+  --orange: #d78a65; /* main buttons, highlights */
+  --green: #a9c16d; /* logo green: logo and chapter seals only */
+  --purple: #786a8d;
+  --grey: #c2c2c2;
+
+  --accent: var(--orange);
+  --accent-hover: #e2a283;
+  --on-accent: #191919; /* text on orange buttons */
+  --on-dark: #ececec; /* body text on the dark bands (Get involved, footer) */
+  --on-dark-subtle: var(--grey);
+
+  /* The sunset used in the page headers (and behind the hero photo while it loads). */
+  --sunset: linear-gradient(180deg, #191919 0%, #18263a 38%, #786a8d 72%, #d78a65 100%);
+
+  /* --- Dark theme (default) --- */
+  color-scheme: dark;
+  --bg: var(--off-black); /* page background */
+  --surface: #212121; /* cards, alternate sections */
+  --surface-2: #2a2a2a; /* cards inside alternate sections */
+  --band: #121212; /* the footer */
+  --wash: #262019; /* warm tint section, date tiles */
+  --ink: #f2f2f2; /* headings, main text */
+  --text: var(--grey); /* body text */
+  --text-subtle: #9b9b9b; /* captions, small print */
+  --accent-ink: var(--orange); /* small orange text (eyebrows, icons): 6:1 on off-black */
+  --link: var(--blue); /* 4.8:1 on off-black */
+  --link-hover: #7fb6de;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.24);
+  --field-border: #6e6e6e; /* 3:1 against the surface, as WCAG requires for inputs */
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+
+  /* --- Typography --- */
+  --font-display: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Rubik Variable', 'Rubik', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* --- Layout --- */
+  --max: 1200px;
+  --pad-x: clamp(16px, 4vw, 48px); /* left/right page gutter */
+  --section-y: clamp(56px, 7vw, 96px); /* top/bottom section padding */
+  --radius: 10px;
+  --radius-lg: 18px;
+
+  /* Colour of the keyboard focus ring */
+  --focus: var(--accent);
+}
+
+/* --- Light theme (chosen with the header button) --- */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f6f5f3;
+  --surface: #ffffff;
+  --surface-2: #efedea;
+  --band: var(--off-black);
+  --wash: #f8ede6;
+  --ink: var(--off-black);
+  --text: #3b3b3b;
+  --text-subtle: #5e5e5e;
+  --accent-ink: #a5532f; /* the orange, darkened for small text on light backgrounds */
+  --link: #2b6a98; /* the blue, darkened to 5.5:1 on the light background */
+  --link-hover: #1f4f72;
+  --line: rgba(25, 25, 25, 0.12);
+  --line-strong: rgba(25, 25, 25, 0.22);
+  --field-border: #858585;
+  --shadow: 0 1px 2px rgba(25, 25, 25, 0.06), 0 8px 24px -12px rgba(25, 25, 25, 0.18);
+  --focus: var(--link);
+}
+
+/* --- Reset ---------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* Keeps in-page anchors from hiding under the sticky header */
+  scroll-padding-top: 104px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* --- Keyboard focus: always visible ---------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Use on any band that is dark in both themes (hero, page headers, footer) */
+.on-dark {
+  --focus: var(--accent);
+  color: var(--on-dark);
+}
+
+/* --- Shared building blocks ------------------------------------------------ */
+.container {
+  max-width: calc(var(--max) + 2 * var(--pad-x));
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+}
+
+/* Small uppercase label above a heading */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+.on-dark .eyebrow {
+  color: var(--accent);
+}
+
+/* Section heading */
+.h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(30px, 3.4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.on-dark .h2 {
+  color: #fff;
+}
+
+.lede {
+  font-size: clamp(17px, 1.4vw, 19px);
+  color: var(--text);
+  max-width: 62ch;
+}
+.on-dark .lede {
+  color: var(--on-dark);
+}
+
+/* Visible to screen readers only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* "Skip to main content" — appears on first Tab press */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: 100;
+  padding: 12px 18px;
+  background: var(--off-black);
+  color: #fff;
+  font-weight: 700;
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 12px;
+  color: #fff;
+  --focus: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
