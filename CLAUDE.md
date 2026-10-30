@@ -20,7 +20,8 @@ live, common edits, TODOs); keep it accurate when you change how things work.
   "Read the newsletter" button).
 - Pages filter out past events at build time, and a small script hides events that end between builds.
 - Old WordPress addresses forward via `redirects` in `astro.config.mjs` (list in `src/data/old-urls.json`).
-- Switch in `src/config/site.ts`: `noindex` (true until launch). Don't change it unless asked.
+- Switch in `src/config/site.ts`: `noindex` (false: the site is live on psoar.org; the 404 page is always noindex). Don't
+  change it unless asked.
 - **Palette: the client's official colours** (tokens at the top of `src/styles/global.css`): off-black `#191919`
   (the base dark colour: page background in dark mode), dark blue `#18263A` (**sparingly**: the top of the sunset
   gradient and the "Get involved" band only), blue `#3C8BC2` (links), orange `#D78A65` (buttons, highlights),

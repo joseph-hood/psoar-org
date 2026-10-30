@@ -36,7 +36,7 @@ Substack posts appear on the site by morning without anyone editing it.
 Open the merged pull request, click **Revert**, and merge the revert PR. GitHub rebuilds and publishes the earlier
 version.
 
-## One-time setup (to do at launch)
+## One-time setup (done for psoar.org)
 
 1. **Calendar must be public:** in Google Calendar, the PSoAR calendar → **Settings and sharing → Access
    permissions for events → Make available to public**, with **See all event details**. (It already is if the old

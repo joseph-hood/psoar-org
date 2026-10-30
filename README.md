@@ -88,4 +88,4 @@ If you're offline, `npm run dev` keeps the last downloaded events (or shows the 
 - [ ] **Chapter Facebook links.** Central Arkansas and Eureka Springs link to a Facebook search for now; put each
       group's own address in `src/data/chapters.ts`. Fayetteville shows "coming soon" until it has one.
 - [ ] **Video titles** on the Resources page (`title` in `src/data/resources.ts`, for screen readers).
-- [ ] **Launch steps** in [docs/DEPLOY.md](docs/DEPLOY.md): public calendar check, Pages, DNS, `noindex: false`.
+- [x] **Launch:** Pages, custom domain, DNS and `noindex: false` are done ([docs/DEPLOY.md](docs/DEPLOY.md)).
