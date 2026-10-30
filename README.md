@@ -37,7 +37,8 @@ Tips for good-looking events:
 - **Description:** the first sentence or two appear on the home page. Put the RSVP/ticket link in the description
   (or the event's own link); the first link becomes the **More info / RSVP** button.
 - Repeating events, moved or cancelled single dates, and all-day or multi-day events all work.
-- Events up to 6 months ahead are shown (`monthsAhead` in `src/config/feeds.json`).
+- Every event up to 12 months ahead is shown (`monthsAhead` in `src/config/feeds.json`), including all the
+  upcoming dates of repeating events, however long ago the series started.
 
 Visitors can subscribe to the whole calendar (Google or Apple/Outlook) or add single events to their own calendar
 from the site.

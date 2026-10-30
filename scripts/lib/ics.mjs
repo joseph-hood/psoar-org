@@ -59,9 +59,11 @@ export function parseIcs(text, { from, until, limit = 200 }) {
       continue;
     }
 
+    // Walk the repeats from the first one up to `until`. Repeats before `from`
+    // are skipped cheaply; a series that began years ago still reaches today.
+    // The cap only guards against a broken rule that never advances.
     const iterator = master.iterator();
-    // A safety cap: a daily event with no end date would otherwise run until `until`.
-    for (let n = 0, next; n < 2000 && (next = iterator.next()); n++) {
+    for (let n = 0, next; n < 200_000 && (next = iterator.next()); n++) {
       if (next.compare(untilTime) > 0) break;
       const details = master.getOccurrenceDetails(next);
       add(out, details.item, details.startDate, details.endDate, fromTime, untilTime, details.recurrenceId);

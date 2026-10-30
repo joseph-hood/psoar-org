@@ -24,7 +24,6 @@ export const chapters: Chapter[] = [
     id: 'bentonville',
     name: 'Bentonville',
     location: 'Bentonville, AR',
-    note: 'Our main chapter',
     email: 'bentonville@psoar.org',
     facebook: SITE.facebookUrl,
   },

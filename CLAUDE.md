@@ -41,7 +41,7 @@ live, common edits, TODOs); keep it accurate when you change how things work.
   and `og-image.png` in `public/` were generated from the dark logo on off-black.
 - The home hero photo (`src/assets/photos/ozarks-sunset.avif`) is shown in its own colours under a soft dark shade
   so the text stays readable (the client preferred this to a coloured overlay).
-- Chapters (Bentonville = the main chapter, Fayetteville, Eureka Springs, Central Arkansas) live in
+- Chapters (Bentonville, Fayetteville, Eureka Springs, Central Arkansas; all equal, none is "main") live in
   `src/data/chapters.ts`, shown on Home and About.
 - Partners (Natural State Mental Health, PATH) live in `src/data/partners.ts`; logos in `src/assets/partners/`.
 - Served from the domain root, so links start with `/`. Don't set `base` in `astro.config.mjs`.
