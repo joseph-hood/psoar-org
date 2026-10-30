@@ -9,6 +9,7 @@ on GitHub Pages. Merging a pull request into `main` publishes the site; see [doc
 | ------------------------------------------- | -------------------------------------------------------- |
 | **Events**                                  | **Google Calendar.** Not this repository (see below).    |
 | **Newsletter posts on the home page**       | **Substack.** Not this repository.                       |
+| Latest newsletter issue (monthly)           | `src/data/latest-substack.html` (paste Substack's embed code) |
 | Resource links, books, videos               | `src/data/resources.ts`                                  |
 | Reading list and the 3 featured articles    | `src/data/articles.ts`                                   |
 | Mission / vision / purpose                  | `src/data/about.ts`                                      |
@@ -45,9 +46,14 @@ from the site.
 
 ## Newsletter (Substack)
 
-The home page has a "Read the newsletter" button to https://psoar.substack.com. The build also tries to download
-the latest posts and shows 3 of them when it can, but Substack currently refuses those downloads from GitHub's
-servers, so expect the button (and a harmless warning in the Actions log).
+The home page shows the **latest issue** using Substack's own embed. Once a month, when a new issue is out:
+
+1. On Substack, open the post → **Share** (or the ⋯ menu) → **Embed**, and copy the code.
+2. In `src/data/latest-substack.html`, replace the old embed code with the new one. Keep the note at the top.
+3. Commit and merge. The site republishes with the new issue.
+
+The build also tries to download the latest posts from Substack automatically and would show those instead, but
+Substack currently refuses those downloads from GitHub's servers (a harmless warning in the Actions log).
 
 ## Contact form
 
