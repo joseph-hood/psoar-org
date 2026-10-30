@@ -13,7 +13,7 @@ on GitHub Pages. Merging a pull request into `main` publishes the site; see [doc
 | Reading list and the 3 featured articles    | `src/data/articles.ts`                                   |
 | Mission / vision / purpose                  | `src/data/about.ts`                                      |
 | Partner organizations (NSMH, PATH)          | `src/data/partners.ts`                                   |
-| Chapters (location, Facebook link)          | `src/data/chapters.ts` (seals in `src/assets/chapters/`) |
+| Chapters (location, email, Facebook link)   | `src/data/chapters.ts` (seals in `src/assets/chapters/`) |
 | Logos and photos                            | `src/assets/`                                            |
 | Email, store, chapter form, Facebook, EIN   | `src/config/site.ts`                                     |
 | Contact form connection                     | `src/config/site.ts` → `contactForm` (see below)          |

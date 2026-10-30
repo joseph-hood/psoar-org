@@ -7,6 +7,7 @@
 import { Image } from 'astro:assets';
 import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import MapPin from '@lucide/astro/icons/map-pin';
+import Mail from '@lucide/astro/icons/mail';
 import Section from '../ui/Section.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 import { chapters } from '../../data/chapters';
@@ -56,6 +57,9 @@ const seals = {
           <p class="location">
             <MapPin size={15} aria-hidden="true" /> {c.location}
           </p>
+          <a class="email" href={`mailto:${c.email}`}>
+            <Mail size={15} aria-hidden="true" /> {c.email}
+          </a>
           {c.facebook ? (
             <a class="fb" href={c.facebook} target="_blank" rel="noopener">
               <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
@@ -78,7 +82,11 @@ const seals = {
   .chapters {
     display: grid;
     gap: 16px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 560px) {
+    .chapters {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   @media (min-width: 960px) {
     .chapters {
@@ -130,6 +138,18 @@ const seals = {
   }
   .location :global(svg) {
     color: var(--accent-ink);
+  }
+  .email {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    font-size: 14.5px;
+    overflow-wrap: anywhere;
+    margin-bottom: 4px;
+  }
+  .email :global(svg) {
+    flex: none;
   }
   .fb {
     display: inline-flex;
