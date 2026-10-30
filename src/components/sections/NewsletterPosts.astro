@@ -1,14 +1,18 @@
 ---
 /**
- * NewsletterPosts — the latest posts from our Substack (home page).
- * If the feed is empty (e.g. it couldn't be downloaded), shows a subscribe prompt instead.
+ * NewsletterPosts — the newsletter on the home page. Uses, in order:
+ *  1. the latest posts downloaded from Substack, when the download works;
+ *  2. otherwise the latest post's Substack embed, from src/data/latest-substack.html
+ *     (paste the new embed code there each month);
+ *  3. otherwise a "Read the newsletter" prompt.
  */
 import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
-import { getNewsletterPosts, postDate } from '../../lib/newsletter';
+import { getLatestEmbed, getNewsletterPosts, postDate } from '../../lib/newsletter';
 import { SITE } from '../../config/site';
 import Button from '../ui/Button.astro';
 
 const posts = getNewsletterPosts(3);
+const embed = posts.length ? null : getLatestEmbed();
 ---
 
 {
@@ -35,6 +39,25 @@ const posts = getNewsletterPosts(3);
         </li>
       ))}
     </ul>
+  ) : embed ? (
+    <div class="latest">
+      <div class="embed" set:html={embed.html} />
+      <div class="latest-side">
+        <p class="eyebrow">Latest issue</p>
+        <p>
+          A new issue goes out each month. Subscribe on Substack to get it in your inbox.
+        </p>
+        <div class="latest-actions">
+          <Button href={SITE.newsletterUrl} external>
+            Subscribe
+          </Button>
+          <Button href={`${SITE.newsletterUrl.replace(/\/$/, '')}/archive`} variant="outline" external>
+            Past issues
+          </Button>
+        </div>
+      </div>
+      <script is:inline async src="https://substack.com/embedjs/embed.js" charset="utf-8"></script>
+    </div>
   ) : (
     <div class="fallback">
       <p>News, event recaps, and reflections from our community, delivered to your inbox.</p>
@@ -120,6 +143,57 @@ const posts = getNewsletterPosts(3);
     font-size: 14px;
     font-weight: 500;
     color: var(--link);
+  }
+  /* Latest-issue embed. Substack's script swaps the <div> for its own card (an
+     iframe); until then, or without JavaScript, the title, blurb and link show. */
+  .latest {
+    display: grid;
+    gap: 24px 48px;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .latest {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    }
+  }
+  .embed {
+    min-width: 0;
+  }
+  .embed :global(.substack-post-embed) {
+    display: grid;
+    gap: 10px;
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--text);
+  }
+  .embed :global(.substack-post-embed p:first-child) {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  .embed :global(.substack-post-embed a) {
+    font-weight: 500;
+  }
+  .embed :global(iframe) {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    border-radius: var(--radius-lg);
+  }
+  .latest-side {
+    display: grid;
+    gap: 14px;
+    color: var(--text);
+  }
+  .latest-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
   }
   .fallback {
     display: flex;

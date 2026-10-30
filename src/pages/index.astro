@@ -1,8 +1,8 @@
 ---
 /**
  * Home page. Address: /
- * Sections, top to bottom: hero (with the next event), upcoming events, what
- * we're about, chapters, latest newsletter posts, featured reading, partners, get involved.
+ * Sections, top to bottom: hero (with the next event), upcoming events, latest
+ * newsletter issue, what we're about, chapters, featured reading, partners, get involved.
  */
 import ArrowRight from '@lucide/astro/icons/arrow-right';
 import Clock from '@lucide/astro/icons/clock';
@@ -116,7 +116,17 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     </div>
   </Section>
 
-  <Section tone="alt" labelledby="about-heading">
+  <Section tone="alt" labelledby="newsletter-heading">
+    <SectionHeading
+      id="newsletter-heading"
+      eyebrow="Newsletter"
+      title="Latest from our Substack"
+      link={{ href: SITE.newsletterUrl, label: 'All posts', external: true }}
+    />
+    <NewsletterPosts />
+  </Section>
+
+  <Section labelledby="about-heading">
     <SectionHeading
       id="about-heading"
       eyebrow="Who we are"
@@ -141,17 +151,8 @@ const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen
     </ul>
   </Section>
 
-  <Chapters />
+  <Chapters tone="alt" />
 
-  <Section tone="alt" labelledby="newsletter-heading">
-    <SectionHeading
-      id="newsletter-heading"
-      eyebrow="Newsletter"
-      title="Latest from our Substack"
-      link={{ href: SITE.newsletterUrl, label: 'All posts', external: true }}
-    />
-    <NewsletterPosts />
-  </Section>
 
   <Section tone="tint" labelledby="reading-heading">
     <SectionHeading

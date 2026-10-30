@@ -1,8 +1,12 @@
 /**
- * Latest Substack posts, saved to src/data/feeds/newsletter.json by
- * scripts/fetch-feeds.mjs before every build. Publish on Substack and the post
- * shows up on the home page at the next daily update.
+ * The newsletter on the home page, from two sources:
+ *  - the latest post's embed code, pasted monthly into src/data/latest-substack.html
+ *    (the normal case: see getLatestEmbed below);
+ *  - posts downloaded from Substack's feed by scripts/fetch-feeds.mjs, used instead
+ *    whenever Substack allows the download (it currently refuses GitHub's servers).
  */
+import latestEmbedFile from '../data/latest-substack.html?raw';
+
 export interface NewsletterPost {
   title: string;
   url: string;
@@ -27,4 +31,19 @@ export function postDate(post: NewsletterPost): string {
   return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeZone: 'America/Chicago' }).format(
     new Date(post.date),
   );
+}
+
+/**
+ * The latest post's Substack embed code, pasted into src/data/latest-substack.html
+ * each month. Returns just the embed <div> (comments and Substack's <script> line are
+ * dropped; the page loads that script itself), or null when the file has no embed.
+ */
+export function getLatestEmbed(): { html: string; url: string } | null {
+  const html = latestEmbedFile
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .trim();
+  if (!/class="substack-post-embed"/.test(html)) return null;
+  const url = html.match(/data-post-link[^>]*href="([^"]+)"/)?.[1] ?? html.match(/href="([^"]+)"/)?.[1] ?? '';
+  return { html, url };
 }

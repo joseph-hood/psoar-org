@@ -16,8 +16,12 @@ live, common edits, TODOs); keep it accurate when you change how things work.
 - `.github/workflows/pages.yml` runs tests, `npm run check`, `npm run build`, `tools/check-site.py` on every PR, and
   on push to `main`, daily at 10:23 UTC, and on manual "Run workflow" also publishes `dist/`. Publishing runs set
   `FEEDS_STRICT=1`, so a calendar outage fails the run and the live site stays as it was. The newsletter is never
-  required (Substack has refused its RSS to GitHub's servers, so it falls back to its archive API, then to a
-  "Read the newsletter" button).
+  required (Substack has refused its RSS to GitHub's servers, so it falls back to its archive API).
+- **Newsletter on the home page** (`src/components/sections/NewsletterPosts.astro`): downloaded posts if the feed
+  works; otherwise the latest issue's Substack embed code, which the client pastes monthly into
+  `src/data/latest-substack.html` (read via `getLatestEmbed()` in `src/lib/newsletter.ts`, which drops comments and
+  Substack's `<script>`; the section loads `substack.com/embedjs/embed.js` itself); otherwise a "Read the
+  newsletter" button.
 - Pages filter out past events at build time, and a small script hides events that end between builds.
 - Old WordPress addresses forward via `redirects` in `astro.config.mjs` (list in `src/data/old-urls.json`).
 - Switch in `src/config/site.ts`: `noindex` (false: the site is live on psoar.org; the 404 page is always noindex). Don't
