@@ -177,3 +177,31 @@ test('Substack archive API (fallback)', () => {
     ],
   );
 });
+
+test('long-running repeating event that started years ago still shows its upcoming dates', () => {
+  const events = parseIcs(
+    ics([
+      [
+        'UID:daily-since-2019@x',
+        'DTSTART;TZID=America/Chicago:20190101T080000',
+        'DTEND;TZID=America/Chicago:20190101T083000',
+        'RRULE:FREQ=DAILY',
+        'SUMMARY:Morning sit',
+      ],
+    ]),
+    window,
+  );
+  assert.equal(events.length, 91); // every day from Nov 1 2026 to Jan 30 2027
+  assert.equal(events[0].start, '2026-11-01T14:00:00.000Z'); // 8am CST (DST ended that morning)
+});
+
+test('events up to a year out are included', () => {
+  const events = parseIcs(
+    ics([['UID:may@x', 'DTSTART;VALUE=DATE:20270515', 'DTEND;VALUE=DATE:20270516', 'SUMMARY:Spring gathering']]),
+    { from: new Date('2026-11-01T00:00:00Z'), until: new Date('2027-11-01T00:00:00Z') },
+  );
+  assert.deepEqual(
+    events.map((e) => e.title),
+    ['Spring gathering'],
+  );
+});
