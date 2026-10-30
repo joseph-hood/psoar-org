@@ -15,10 +15,10 @@ export const SITE = {
 
   /**
    * SEARCH ENGINE SWITCH.
-   * While true, every page tells search engines not to index it. Turn it off
-   * (false) once the site is live on psoar.org. The 404 page is always noindex.
+   * While true, every page tells search engines not to index it. The site is
+   * live on psoar.org, so this is false. The 404 page is always noindex.
    */
-  noindex: true,
+  noindex: false,
 
   /** Shown in the footer and on the About page. */
   ein: '41-2369082',
