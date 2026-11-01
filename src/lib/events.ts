@@ -92,6 +92,17 @@ export function startParts(event: CalendarEvent) {
   return dateParts(event.start, event.allDay);
 }
 
+/** The event's start date (YYYY-MM-DD) in the calendar's time zone, for matching "the event on this day". */
+export function localDate(event: CalendarEvent): string {
+  if (event.allDay) return event.start;
+  const parts = Object.fromEntries(
+    fmt({ year: 'numeric', month: '2-digit', day: '2-digit' })
+      .formatToParts(new Date(event.start))
+      .map((p) => [p.type, p.value]),
+  );
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
 /** "Month Year" heading this event is listed under. */
 export function monthKey(event: CalendarEvent): string {
   return startParts(event).monthLong;

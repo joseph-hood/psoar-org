@@ -33,6 +33,14 @@ export const SITE = {
   calendar: feeds.calendar,
 
   /**
+   * TEMPORARY: pin a specific event in the home page's "Next up" hero card,
+   * instead of whichever event is chronologically soonest. The full events
+   * list is unaffected. Match the event's start date (YYYY-MM-DD, calendar's
+   * time zone). Set to null to go back to normal.
+   */
+  pinnedHeroEventDate: '2026-11-22' as string | null,
+
+  /**
    * CONTACT FORM → Google Form (responses land in the form's linked Google Sheet).
    * Leave `action` empty and the form shows "email us instead" and sends nothing.
    * README.md → "Contact form" explains how to fill these in.
