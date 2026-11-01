@@ -24,13 +24,14 @@ import Partners from '../components/sections/Partners.astro';
 import Chapters from '../components/sections/Chapters.astro';
 import { Image } from 'astro:assets';
 import heroPhoto from '../assets/photos/ozarks-sunset.avif';
-import { endsAt, getEvents, startParts, whenText } from '../lib/events';
+import { endsAt, getEvents, localDate, startParts, whenText } from '../lib/events';
 import { articles } from '../data/articles';
 import { pillars } from '../data/about';
 import { SITE } from '../config/site';
 
 const events = getEvents();
-const next = events[0];
+const pinned = SITE.pinnedHeroEventDate && events.find((e) => localDate(e) === SITE.pinnedHeroEventDate);
+const next = pinned || events[0];
 const nextDate = next && startParts(next);
 const featured = articles.filter((a) => a.featured).slice(0, 3);
 const pillarIcons = { mission: Sprout, vision: HeartHandshake, purpose: BookOpen };
